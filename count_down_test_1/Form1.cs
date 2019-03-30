@@ -15,6 +15,14 @@ namespace count_down_test_1
         public Form1()
         {
             InitializeComponent();
+            System.TimeSpan span = new TimeSpan(0, 1, 0);
+            Timer timer = new Timer(span);
+            timer.onStart();
+        }
+
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
