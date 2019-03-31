@@ -9,14 +9,18 @@ namespace count_down_test_1
     class Timer
    //   Timer class
     {
+        public delegate void AlarmEventHandler(object sender, EventArgs e);
+        public delegate void AfterAlarmEventHandler(object sender, EventArgs e);
+
         private System.DateTime startTime;
         private System.DateTime endTime;
         private System.DateTime currentTime;
         private System.TimeSpan diffTimeSpan;
         private bool expire;
         private bool alarm;
-        public delegate void AlarmEventHandler(object sender, EventArgs e);
+        
         public event AlarmEventHandler Alarm;
+        public event AfterAlarmEventHandler AfterAlarm;
 
 
         //  Default constructor
@@ -67,7 +71,7 @@ namespace count_down_test_1
 
             if ( expire == false)   //  Not expired
             {
-                if (currentTime.CompareTo(endTime) <= 0) //  expire
+                if (currentTime.CompareTo(endTime) <= 0) //  not expire
                 {
                     diffTimeSpan = endTime.Subtract(currentTime);
                     if(diffTimeSpan.TotalMilliseconds < 100)    // Turn to expired
@@ -76,17 +80,26 @@ namespace count_down_test_1
                         alarm = true;
                         onAlarm();
                     }
+                    else
+                    {
+                        ;
+                    }
                 }
                 else   // expire
                 {
                     expire = true;
                     diffTimeSpan = currentTime.Subtract(endTime);
+                    onAlarm();
                 }
             }
 
             else // expired
             {
-                diffTimeSpan = endTime.Subtract(currentTime);
+                diffTimeSpan = currentTime.Subtract(endTime);
+                if(diffTimeSpan.TotalMilliseconds > 100)    //  not alarming
+                {
+                    onAfterAlarm();
+                }
             }
 
             Console.WriteLine(alarm ? "!!!!!":" ");
@@ -107,6 +120,12 @@ namespace count_down_test_1
         {
             Console.WriteLine("Alarming !!!");
             this.Alarm(this, new EventArgs());   //发出警报
+        }
+
+        private void onAfterAlarm()
+        {
+            Console.WriteLine("after alarming");
+            this.AfterAlarm(this, new EventArgs());
         }
 
     }
