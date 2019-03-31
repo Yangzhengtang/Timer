@@ -15,6 +15,8 @@ namespace count_down_test_1
         private System.TimeSpan diffTimeSpan;
         private bool expire;
         private bool alarm;
+        public delegate void AlarmEventHandler(object sender, EventArgs e);
+        public event AlarmEventHandler Alarm;
 
 
         //  Default constructor
@@ -68,10 +70,11 @@ namespace count_down_test_1
                 if (currentTime.CompareTo(endTime) <= 0) //  expire
                 {
                     diffTimeSpan = endTime.Subtract(currentTime);
-                    if(diffTimeSpan.TotalMilliseconds < 300)    // Turn to expired
+                    if(diffTimeSpan.TotalMilliseconds < 100)    // Turn to expired
                     {
                         expire = true;
                         alarm = true;
+                        onAlarm();
                     }
                 }
                 else   // expire
@@ -98,6 +101,12 @@ namespace count_down_test_1
             {
                 update();
             }
+        }
+
+        private void onAlarm()
+        {
+            Console.WriteLine("Alarming !!!");
+            this.Alarm(this, new EventArgs());   //发出警报
         }
 
     }
