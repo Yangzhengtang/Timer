@@ -3,24 +3,36 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
+using System.IO;
 
 namespace count_down_test_1
 {
     class Timer
    //   Timer class
     {
+        //  Delegations
         public delegate void AlarmEventHandler(object sender, EventArgs e);
         public delegate void AfterAlarmEventHandler(object sender, EventArgs e);
+        public delegate void EndHandler(object sender, EventArgs e);
 
+        //  Events
+        public event AlarmEventHandler Alarm;
+        public event AfterAlarmEventHandler AfterAlarm;
+        public event EndHandler End;
+
+        //  Properties
+        private string configPath = "./TimerConfig.json";
+        private Newtonsoft.Json.JsonObjectAttribute config; 
         private System.DateTime startTime;
         private System.DateTime endTime;
         private System.DateTime currentTime;
         private System.TimeSpan diffTimeSpan;
         private bool expire;
         private bool alarm;
+        private bool endSig;    //  Sigal sent from UI
         
-        public event AlarmEventHandler Alarm;
-        public event AfterAlarmEventHandler AfterAlarm;
+
 
 
         //  Default constructor
@@ -32,6 +44,7 @@ namespace count_down_test_1
             diffTimeSpan = new System.TimeSpan();
             expire = false;
             alarm = false;
+            endSig = false;
         }
 
         //  construct from an end time
@@ -51,6 +64,7 @@ namespace count_down_test_1
             }
             expire = false;
             alarm = false;
+            endSig = false;
         }
 
         //  construct fomr a time span
@@ -62,6 +76,23 @@ namespace count_down_test_1
             currentTime = System.DateTime.Now;
             expire = false;
             alarm = false;
+            endSig = false;
+        }
+
+        //  Dump this Timer to a configure file (json)
+        public void dumpConfig(string path = null)
+        {
+            Console.WriteLine("dumping");
+            if (path == null)
+            {
+                path = configPath;
+            }
+            string json = JsonConvert.SerializeObject(this);
+            using (StreamWriter sw = new StreamWriter(path))
+            {
+                sw.Write(json);
+                Console.WriteLine("Dump done");
+            }
         }
 
         public void update()
@@ -89,7 +120,6 @@ namespace count_down_test_1
                 {
                     expire = true;
                     diffTimeSpan = currentTime.Subtract(endTime);
-                    onAlarm();
                 }
             }
 
@@ -102,10 +132,9 @@ namespace count_down_test_1
                 }
             }
 
-            Console.WriteLine(alarm ? "!!!!!":" ");
-            Console.WriteLine("Expired: {0}", expire.ToString());
-            Console.WriteLine("{0} - {1} = {2}", 
-                endTime, currentTime, diffTimeSpan.ToString());
+            Console.WriteLine("{0} - {1} = {2}, Alarm: {3}", 
+                endTime, currentTime, diffTimeSpan.ToString(),
+                (alarm ? "Yes" : "No"));
         }
 
         public void onStart()
@@ -113,6 +142,10 @@ namespace count_down_test_1
             while (true)
             {
                 update();
+                if (endSig)
+                {
+                    break;
+                }
             }
         }
 
@@ -120,6 +153,7 @@ namespace count_down_test_1
         {
             Console.WriteLine("Alarming !!!");
             this.Alarm(this, new EventArgs());   //发出警报
+            this.dumpConfig();
         }
 
         private void onAfterAlarm()
@@ -128,5 +162,11 @@ namespace count_down_test_1
             this.AfterAlarm(this, new EventArgs());
         }
 
+        private void onEnd()
+        {
+            Console.WriteLine("Now ending");
+            endSig = false;
+            this.End(this, new EventArgs());
+        }
     }
 }

@@ -16,6 +16,7 @@ namespace count_down_test_1
         public Form1()
         {
             InitializeComponent();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
 
         }
 
@@ -59,7 +60,7 @@ namespace count_down_test_1
 
         private void AfterAlarmReceiver(object sender, EventArgs e)
         {
-            Console.WriteLine("Get the alarm");
+            Console.WriteLine("After the alarm");
             Action DoAction = delegate ()
             {
                 textBox1.Clear();
@@ -81,6 +82,11 @@ namespace count_down_test_1
         private void textBox1_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void CloseWindowsReceicer(object sender, EventArgs e)
+        {
+            Console.WriteLine("/n/n/n/n/n/n/n/n/n");
         }
     }
 
