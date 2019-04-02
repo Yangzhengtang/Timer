@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
+using static count_down_test_1.TimerOption;
 
 namespace count_down_test_1
 {
@@ -22,30 +23,34 @@ namespace count_down_test_1
         public event EndHandler End;
 
         //  Properties
-        private string configPath = "./TimerConfig.json";
-        private Newtonsoft.Json.JsonObjectAttribute config; 
-        private System.DateTime startTime;
-        private System.DateTime endTime;
-        private System.DateTime currentTime;
-        private System.TimeSpan diffTimeSpan;
-        private bool expire;
-        private bool alarm;
-        private bool endSig;    //  Sigal sent from UI
+        protected string configPath = "./TimerConfig.json";
+        protected Newtonsoft.Json.JsonObjectAttribute config;
+        protected System.DateTime startTime;
+        protected System.DateTime endTime;
+        protected System.DateTime currentTime;
+        protected System.TimeSpan diffTimeSpan;
+        protected System.TimeSpan originTimeSpan;
+        protected bool expire;
+        protected bool alarm;
+        protected bool endSig;    //  Sigal sent from UI
+        protected TimerOption timerOption;
+        protected TimerConfigure timerConfigure;
         
-
-
-
+        
         //  Default constructor
         public  Timer()
         {
             startTime = new System.DateTime();
             endTime = new System.DateTime();
             currentTime = new System.DateTime();
+            originTimeSpan = new System.TimeSpan();
             diffTimeSpan = new System.TimeSpan();
             expire = false;
             alarm = false;
             endSig = false;
+            timerOption = Normal;
         }
+        
 
         //  construct from an end time
         public  Timer(System.DateTime EndTime)
@@ -55,28 +60,31 @@ namespace count_down_test_1
             currentTime = startTime;
             if (currentTime.CompareTo(endTime) < 0)
             {
-                diffTimeSpan = endTime.Subtract(currentTime);
+                originTimeSpan= endTime.Subtract(currentTime);
             }
             else
             {
                 throw (new ApplicationException(
                     "The end time is earlier than current time."));
             }
+            diffTimeSpan = originTimeSpan;
             expire = false;
             alarm = false;
             endSig = false;
         }
 
         //  construct fomr a time span
-        public  Timer(System.TimeSpan DiffTimeSpan)
+        public  Timer(System.TimeSpan OriginTimeSpan, TimerOption timeroption)
         {
-            diffTimeSpan = DiffTimeSpan;
+            originTimeSpan = OriginTimeSpan;
+            diffTimeSpan = originTimeSpan;
             startTime = System.DateTime.Now;
             endTime = startTime.Add(diffTimeSpan);
             currentTime = System.DateTime.Now;
             expire = false;
             alarm = false;
             endSig = false;
+            timerOption = timeroption;
         }
 
         //  Dump this Timer to a configure file (json)
@@ -95,7 +103,7 @@ namespace count_down_test_1
             }
         }
 
-        public void update()
+        protected virtual void update()
         {
             System.Threading.Thread.Sleep(1);
             currentTime = System.DateTime.Now;
@@ -144,28 +152,29 @@ namespace count_down_test_1
                 update();
                 if (endSig)
                 {
+                    Console.WriteLine("The timer's ended.");
                     break;
                 }
             }
         }
 
-        private void onAlarm()
+        public void onAlarm()
         {
             Console.WriteLine("Alarming !!!");
-            this.Alarm(this, new EventArgs());   //发出警报
+            this.Alarm(this, new EventArgs());   //send Alarming event
             this.dumpConfig();
         }
 
-        private void onAfterAlarm()
+        public void onAfterAlarm()
         {
             Console.WriteLine("after alarming");
             this.AfterAlarm(this, new EventArgs());
         }
 
-        private void onEnd()
+        public void onEnd()
         {
             Console.WriteLine("Now ending");
-            endSig = false;
+            endSig = true;
             this.End(this, new EventArgs());
         }
     }

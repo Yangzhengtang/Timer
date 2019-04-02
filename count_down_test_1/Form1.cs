@@ -8,6 +8,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
+using static count_down_test_1.TimerOption;
 
 namespace count_down_test_1
 {
@@ -28,7 +29,7 @@ namespace count_down_test_1
         private void button1_Click(object sender, EventArgs e)
         {
             System.TimeSpan span = new TimeSpan(0, 0, 5);
-            Timer timer = new Timer(span);
+            Timer timer = new CycleTimer(span,Cycle);
             timer.Alarm += new Timer.AlarmEventHandler(AlarmReceiver);  //  register the receiver
             timer.AfterAlarm += new Timer.AfterAlarmEventHandler(AfterAlarmReceiver);
             Thread t1 = new Thread(new ThreadStart(timer.onStart));

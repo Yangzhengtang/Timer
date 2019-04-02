@@ -6,8 +6,10 @@ using System.Threading.Tasks;
 
 namespace count_down_test_1
 {
-    enum MyEnum
+    enum TimerOption
     {
-
+        Normal = 1,
+        Cycle  = 2,
+        Alarm  = 3
     }
 }
