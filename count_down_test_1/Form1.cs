@@ -29,7 +29,8 @@ namespace count_down_test_1
         private void button1_Click(object sender, EventArgs e)
         {
             System.TimeSpan span = new TimeSpan(0, 0, 5);
-            Timer timer = new CycleTimer(span,Cycle);
+            //Timer timer = new CycleTimer(span,Cycle);
+            Timer timer = new Timer(span, Normal);
             timer.Alarm += new Timer.AlarmEventHandler(AlarmReceiver);  //  register the receiver
             timer.AfterAlarm += new Timer.AfterAlarmEventHandler(AfterAlarmReceiver);
             Thread t1 = new Thread(new ThreadStart(timer.onStart));
