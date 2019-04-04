@@ -32,26 +32,33 @@ namespace count_down_test_1
         protected System.TimeSpan originTimeSpan;
         protected bool expire;
         protected bool alarm;
+        protected bool pause;
         protected bool endSig;    //  Sigal sent from UI
         protected TimerOption timerOption;
         protected TimerConfigure timerConfigure;
         
         
-        //  Default constructor
-        public  Timer()
+        //  Constructor: read cofigure from json file and build 
+        public  Timer(string path="./TimerConfig.json")
         {
-            startTime = new System.DateTime();
-            endTime = new System.DateTime();
-            currentTime = new System.DateTime();
-            originTimeSpan = new System.TimeSpan();
-            diffTimeSpan = new System.TimeSpan();
-            expire = false;
-            alarm = false;
-            endSig = false;
-            timerOption = Normal;
+            string json;
+            using (StreamReader sr = new StreamReader(path))
+            {
+                json = sr.ReadToEnd();
+                Console.WriteLine("Read configure done\n Now building the timer...");
+                this.timerConfigure = JsonConvert.DeserializeObject<TimerConfigure>(json);
+                this.startTime = this.timerConfigure.startTime;
+                this.endTime = this.timerConfigure.endTime;
+                this.originTimeSpan = this.timerConfigure.originTimerSpan;
+                this.expire = this.timerConfigure.expire;
+                this.endSig = this.timerConfigure.endSig;
+                this.alarm = this.timerConfigure.alarm;
+                this.pause = this.timerConfigure.pause;
+                this.timerOption = this.timerConfigure.timerOption;
+                this.diffTimeSpan = new System.TimeSpan();
+            }
         }
         
-
         //  construct from an end time
         public  Timer(System.DateTime EndTime)
         {
@@ -71,6 +78,7 @@ namespace count_down_test_1
             expire = false;
             alarm = false;
             endSig = false;
+            pause = false;
         }
 
         //  construct fomr a time span
@@ -84,6 +92,7 @@ namespace count_down_test_1
             expire = false;
             alarm = false;
             endSig = false;
+            pause = false;
             timerOption = timeroption;
         }
 
@@ -95,7 +104,19 @@ namespace count_down_test_1
             {
                 path = configPath;
             }
-            string json = JsonConvert.SerializeObject(this);
+
+            this.timerConfigure = new TimerConfigure(this.startTime,
+                                                     this.endTime,
+                                                     this.currentTime,
+                                                     this.diffTimeSpan,
+                                                     this.originTimeSpan,
+                                                     this.expire,
+                                                     this.alarm,
+                                                     this.endSig,
+                                                     this.pause,
+                                                     this.timerOption);
+
+            string json = JsonConvert.SerializeObject(this.timerConfigure);
             using (StreamWriter sw = new StreamWriter(path))
             {
                 sw.Write(json);
@@ -149,7 +170,11 @@ namespace count_down_test_1
         {
             while (true)
             {
-                update();
+                if(pause == false)
+                {
+                    update();
+                }
+         
                 if (endSig)
                 {
                     Console.WriteLine("The timer's ended.");
@@ -176,6 +201,20 @@ namespace count_down_test_1
             Console.WriteLine("Now ending");
             endSig = true;
             this.End(this, new EventArgs());
+        }
+
+        public void onPauseResume()
+        {
+            if (pause)
+            {
+                Console.WriteLine("Now pausing...");
+                this.pause = false;
+            }
+            else
+            {
+                Console.WriteLine("Noew resuming...");
+                this.pause = true;
+            }
         }
     }
 }
