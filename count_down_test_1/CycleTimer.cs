@@ -50,7 +50,7 @@ namespace count_down_test_1
                     onAlarm();
 
                     // Now reset the timer.
-                    onCycleTurnOver();
+                    //onCycleTurnOver();
                 }
             }
 
@@ -60,11 +60,12 @@ namespace count_down_test_1
                 if (diffTimeSpan.TotalMilliseconds > 100)    //  not alarming
                 {
                     onAfterAlarm();
+                    onCycleTurnOver();
                 }
 
-                onAfterAlarm();
+                //onAfterAlarm();
                 //  reset the timer
-                onCycleTurnOver();
+                //onCycleTurnOver();
 
             }
 
