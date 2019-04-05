@@ -202,7 +202,6 @@ namespace count_down_test_1
                 args.Alarm = this.alarm;
                 args.Pause = this.pause;
                 args.End = this.endSig;
-            Console.WriteLine("\n\n\n\n\n");
             this.Update(this, args);
         }
 
