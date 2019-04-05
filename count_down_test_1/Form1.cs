@@ -14,33 +14,29 @@ namespace count_down_test_1
 {
     public partial class Form1 : Form
     {
+        private Timer timer;    //  The timer contained in this window.
+
+
         public Form1()
         {
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
-
+            this.timer = null;
         }
 
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
-        {
 
-        }
-
-        private void button1_Click(object sender, EventArgs e)
+        public void register_receivers()
         {
-            System.TimeSpan span = new TimeSpan(0, 0, 5);
-            Timer timer = new CycleTimer(span,Cycle);
-            //Timer timer = new Timer(span, Normal);
-            //Timer timer = new Timer("./TimerConfig.json");
-            timer.Alarm += new Timer.AlarmEventHandler(AlarmReceiver);  //  register the receiver
+            //  register all the receivers of the timer 
+            timer.Alarm += new Timer.AlarmEventHandler(AlarmReceiver);  
             timer.AfterAlarm += new Timer.AfterAlarmEventHandler(AfterAlarmReceiver);
-            Thread t1 = new Thread(new ThreadStart(timer.onStart));
-            t1.Start();
+            timer.End += new Timer.EndHandler(EndReceiver);
         }
+
 
         private void AlarmReceiver(object sender, EventArgs e)
         {
-            Console.WriteLine("Get the alarm");
+            Console.WriteLine("Just on alarm.");
             Action DoAction = delegate ()
             {
                 textBox1.Clear();
@@ -63,12 +59,35 @@ namespace count_down_test_1
 
         private void AfterAlarmReceiver(object sender, EventArgs e)
         {
-            Console.WriteLine("After the alarm");
+            Console.WriteLine("Just after alarm.");
             Action DoAction = delegate ()
             {
                 textBox1.Clear();
-                //textBox1.AppendText("Not Alarming!");
             };
+
+            if (this.InvokeRequired)
+            {
+                ControlExtensions.UIThreadInvoke(this, delegate
+                {
+                    DoAction();
+                });
+            }
+            else
+            {
+                DoAction();
+            }
+        }
+
+        private void EndReceiver(object sender, EventArgs e)
+        {
+            Console.WriteLine("Just end the timer.");
+            Action DoAction = delegate ()
+            {
+                this.textBox1.Clear();
+                this.textBox1.AppendText("Now the Timer is ended!");
+            };
+
+
             if (this.InvokeRequired)
             {
                 ControlExtensions.UIThreadInvoke(this, delegate
@@ -90,6 +109,34 @@ namespace count_down_test_1
         private void CloseWindowsReceicer(object sender, EventArgs e)
         {
             Console.WriteLine("/n/n/n/n/n/n/n/n/n");
+            if (this.timer != null)
+            {
+                this.timer.onEnd();
+            }
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            if( this.timer != null)
+            {
+                Console.WriteLine("Warning! The timer already exists.");
+            }
+            else    // Create a timer and start running it.
+            {  
+                System.TimeSpan span = new TimeSpan(0, 0, 5);
+                this.timer = new CycleTimer(span, Cycle);
+                this.register_receivers();
+                //Timer timer = new Timer(span, Normal);
+                //Timer timer = new Timer("./TimerConfig.json");
+
+                Thread t1 = new Thread(new ThreadStart(timer.onStart));
+                t1.Start();
+            }
+        }
+
+        private void button2_Click(object sender, EventArgs e)
+        {
+            this.timer.onPauseResume();
         }
     }
 

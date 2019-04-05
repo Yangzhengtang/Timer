@@ -115,13 +115,14 @@ namespace count_down_test_1
                                                      this.endSig,
                                                      this.pause,
                                                      this.timerOption);
-
+            this.timerConfigure.dump(path);
+            /*
             string json = JsonConvert.SerializeObject(this.timerConfigure);
             using (StreamWriter sw = new StreamWriter(path))
             {
                 sw.Write(json);
                 Console.WriteLine("Dump done");
-            }
+            }   */
         }
 
         protected virtual void update()

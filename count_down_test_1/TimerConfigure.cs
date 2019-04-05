@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Newtonsoft.Json;
 
 namespace count_down_test_1
 {
@@ -33,6 +34,22 @@ namespace count_down_test_1
             endSig = EndSig;
             pause = Pause;
             timerOption = TO;
+        }
+
+        public void dump(string path)
+        {
+            Console.WriteLine("Now dumping the configure to {0}",path);
+            string json = JsonConvert.SerializeObject(this);
+            using (System.IO.StreamWriter sw = new System.IO.StreamWriter(path))
+            {
+                sw.Write(json);
+                Console.WriteLine("Dump done.");
+            }
+        }
+
+        public void read(string path)
+        {
+
         }
     }
 }

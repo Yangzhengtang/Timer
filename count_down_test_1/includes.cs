@@ -10,6 +10,6 @@ namespace count_down_test_1
     {
         Normal = 1,
         Cycle  = 2,
-        Alarm  = 3
+        Timing = 3
     }
 }
