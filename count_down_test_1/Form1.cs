@@ -151,6 +151,7 @@ namespace count_down_test_1
             if( this.timer != null)
             {
                 Console.WriteLine("Warning! The timer already exists.");
+                MessageBox.Show("FBI WARNING", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else    // Create a timer and start running it.
             {  
