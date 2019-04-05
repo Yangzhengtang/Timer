@@ -182,7 +182,12 @@ namespace count_down_test_1
             Console.WriteLine("\n\n\n\n\n");
             this.Update(this, args);
             Console.WriteLine("Wow");   */
-            this.onUpdated();
+
+            if (this.pause == false)    //  There is a bug in the onUpdate thread... 
+            {
+                this.onUpdated();
+            }
+            
             
             Console.WriteLine("{0} - {1} = {2}, Alarm: {3}", 
                 endTime, currentTime, diffTimeSpan.ToString(),
@@ -254,7 +259,7 @@ namespace count_down_test_1
             }
             else
             {
-                Console.WriteLine("Noew resuming...");
+                Console.WriteLine("Now resuming...");
                 this.pause = false;
                 this.currentTime = System.DateTime.Now;
                 System.TimeSpan pauseDuration = this.currentTime.Subtract(this.pauseTime);

@@ -16,8 +16,7 @@ namespace count_down_test_1
         {
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
-            //Application.Run(new Form1());
-            Application.Run(new MultiFormContext(new Form1(), new Form1()));
+            Application.Run(new TimerManager());
         }
 
         //  https://codeday.me/bug/20180625/186800.html
