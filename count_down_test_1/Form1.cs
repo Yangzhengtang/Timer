@@ -16,14 +16,12 @@ namespace count_down_test_1
     {
         private Timer timer;    //  The timer contained in this window.
 
-
         public Form1()
         {
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
             this.timer = null;
         }
-
 
         public void register_receivers()
         {
@@ -33,7 +31,6 @@ namespace count_down_test_1
             timer.End += new Timer.EndHandler(EndReceiver);
             timer.Update += new Timer.UpdateHandler(UpdateReceiver);
         }
-
 
         private void AlarmReceiver(object sender, EventArgs e)
         {
@@ -108,10 +105,19 @@ namespace count_down_test_1
             Action DoAction = delegate ()
             {
                 this.textBox1.Clear();
-                double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
                 this.textBox1.AppendText(e.Pause ? "Paused " : "Running ");
-                this.textBox1.AppendText(e.Expire ? "Expired: " : "Left: ");
-                this.textBox1.AppendText(percent.ToString());
+
+                switch (this.timer.timerOption)
+                {
+                    case TimerOption.Timing:
+                        this.textBox1.AppendText("Passed:" + e.Diff.ToString());
+                        break;
+                    default:
+                        double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
+                        this.textBox1.AppendText(e.Expire ? "Expired: " : "Left: ");
+                        this.textBox1.AppendText(percent.ToString());
+                        break;
+                }              
             };
             if (this.InvokeRequired)
             {
@@ -148,11 +154,12 @@ namespace count_down_test_1
             }
             else    // Create a timer and start running it.
             {  
-                System.TimeSpan span = new TimeSpan(0, 0, 5);
-                this.timer = new CycleTimer(span, Cycle);
-                this.register_receivers();
-                //Timer timer = new Timer(span, Normal);
+                System.TimeSpan span = new TimeSpan(0, 0, 10);
+                //this.timer = new CycleTimer(span, Cycle);
+                this.timer = new TimingTimer(span, Timing);
+                //this.timer = new Timer(span, Normal);
                 //Timer timer = new Timer("./TimerConfig.json");
+                this.register_receivers();
 
                 Thread t1 = new Thread(new ThreadStart(timer.onStart));
                 t1.Start();

@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static count_down_test_1.TimerOption;
 
 namespace count_down_test_1
 {
@@ -14,9 +13,10 @@ namespace count_down_test_1
             OriginTimeSpan, timeroption)
         {; }
 
+        //  The overridden method.
         protected override void update()
         {
-            if(timerOption != Cycle)
+            if(timerOption != TimerOption.Cycle)
             {
                 Console.WriteLine("What the fuck?");
                 this.onEnd();
@@ -48,9 +48,6 @@ namespace count_down_test_1
                     expire = true;
                     alarm = true;
                     onAlarm();
-
-                    // Now reset the timer.
-                    //onCycleTurnOver();
                 }
             }
 
@@ -62,11 +59,6 @@ namespace count_down_test_1
                     onAfterAlarm();
                     onCycleTurnOver();
                 }
-
-                //onAfterAlarm();
-                //  reset the timer
-                //onCycleTurnOver();
-
             }
 
             this.onUpdated();
@@ -76,15 +68,15 @@ namespace count_down_test_1
                 (alarm ? "Yes" : "No"));
         }
     
+        //  After expired, the cycle timer will turn over to the beginning.
         private void onCycleTurnOver()
         {
-            startTime = startTime.Add(originTimeSpan);
+            //startTime = startTime.Add(originTimeSpan);
             endTime = endTime.Add(originTimeSpan);
             diffTimeSpan = originTimeSpan;
             expire = false;
             alarm = false;
             endSig = false;
         }
-         
     }
 }

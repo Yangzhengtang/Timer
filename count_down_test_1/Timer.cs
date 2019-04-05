@@ -26,17 +26,20 @@ namespace count_down_test_1
 
         //  Properties
         protected string configPath = "./TimerConfig.json";
-        protected Newtonsoft.Json.JsonObjectAttribute config;
+
         protected System.DateTime startTime;
         protected System.DateTime endTime;
         protected System.DateTime currentTime;
+        protected System.DateTime pauseTime;
+
         protected System.TimeSpan diffTimeSpan;
         protected System.TimeSpan originTimeSpan;
+
         protected bool expire;
         protected bool alarm;
         protected bool pause;
         protected bool endSig;    //  Sigal sent from UI
-        protected TimerOption timerOption;
+        public TimerOption timerOption;
         protected TimerConfigure timerConfigure;
         
         
@@ -127,6 +130,8 @@ namespace count_down_test_1
             }   */
         }
 
+        //  Update the information of the timer
+        //  !!!!!!!!!!!!!!!!!!!!!!!! The timer duration is decided by the end time and current time !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         protected virtual void update()
         {
             System.Threading.Thread.Sleep(1);
@@ -184,7 +189,11 @@ namespace count_down_test_1
                 (alarm ? "Yes" : "No"));    
         }
 
-        public void onUpdated() // The update will be overridden in other class, so the update event should be notified in this seperated method. 
+        /*  The update will be overridden in other class, 
+            so the update event should be done in this seperated method.
+            This method is to notify the UI and send the information.
+        */
+        public void onUpdated()  
         {
             UpdateEventArgs args = new UpdateEventArgs();
                 args.Diff = this.diffTimeSpan;
@@ -197,6 +206,7 @@ namespace count_down_test_1
             this.Update(this, args);
         }
 
+        //  Activate the timer.
         public void onStart()
         {
             while (true)
@@ -218,7 +228,7 @@ namespace count_down_test_1
         {
             Console.WriteLine("Alarming !!!");
             this.Alarm(this, new EventArgs());   //send Alarming event
-            this.dumpConfig();
+            this.dumpConfig();  //  Save the configure
         }
 
         public void onAfterAlarm()
@@ -231,21 +241,46 @@ namespace count_down_test_1
         {
             Console.WriteLine("Now ending");
             endSig = true;
+            this.dumpConfig();
             this.End(this, new EventArgs());
         }
 
-        public void onPauseResume()
+        public virtual void onPauseResume() 
         {
-            if (pause)
+            if (pause == false)
             {
                 Console.WriteLine("Now pausing...");
-                this.pause = false;
+                this.pause = true;
+                this.pauseTime = this.currentTime;
             }
             else
             {
                 Console.WriteLine("Noew resuming...");
-                this.pause = true;
+                this.pause = false;
+                this.currentTime = System.DateTime.Now;
+                System.TimeSpan pauseDuration = this.currentTime.Subtract(this.pauseTime);
+
+                switch (this.timerOption)
+                //  Reset the end time or not, according to the type of timer.
+                // Default: the timer countdown according to the given duration, not the deadline.
+                {
+                    case TimerOption.Normal:
+                        this.endTime = endTime.Add(pauseDuration);  //  Defer the end time as it was stopped for [pauseDuration].
+                        Console.WriteLine("Resumed, the endtime was reset.");
+                        break;
+                    case TimerOption.Cycle:
+                        this.endTime = endTime.Add(pauseDuration);  //  Defer the end time as it was stopped for [pauseDuration].
+                        Console.WriteLine("Resumed, the endtime was reset.");
+                        break;
+                    case TimerOption.Timing:
+                        this.startTime = startTime.Add(pauseDuration);  //  Defer the start time.
+                        Console.WriteLine("Resumed, the starttime wasreset.");
+                        break;
+                    default:
+                        break;
+                }
             }
+            this.onUpdated();
         }
 
         public class UpdateEventArgs : EventArgs
