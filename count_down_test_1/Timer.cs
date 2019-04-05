@@ -16,11 +16,13 @@ namespace count_down_test_1
         public delegate void AlarmEventHandler(object sender, EventArgs e);
         public delegate void AfterAlarmEventHandler(object sender, EventArgs e);
         public delegate void EndHandler(object sender, EventArgs e);
+        public delegate void UpdateHandler(object sender, UpdateEventArgs e);
 
         //  Events
         public event AlarmEventHandler Alarm;
         public event AfterAlarmEventHandler AfterAlarm;
         public event EndHandler End;
+        public event UpdateHandler Update;
 
         //  Properties
         protected string configPath = "./TimerConfig.json";
@@ -162,9 +164,37 @@ namespace count_down_test_1
                 }
             }
 
+            // Send the update event.
+            /*
+            Console.WriteLine("why");
+            UpdateEventArgs args = new UpdateEventArgs();
+                args.Diff = this.diffTimeSpan;
+                args.Orig = this.originTimeSpan;
+                args.Expire = this.expire;
+                args.Alarm = this.alarm;
+                args.Pause = this.pause;
+                args.End = this.endSig;
+            Console.WriteLine("\n\n\n\n\n");
+            this.Update(this, args);
+            Console.WriteLine("Wow");   */
+            this.onUpdated();
+            
             Console.WriteLine("{0} - {1} = {2}, Alarm: {3}", 
                 endTime, currentTime, diffTimeSpan.ToString(),
-                (alarm ? "Yes" : "No"));
+                (alarm ? "Yes" : "No"));    
+        }
+
+        public void onUpdated() // The update will be overridden in other class, so the update event should be notified in this seperated method. 
+        {
+            UpdateEventArgs args = new UpdateEventArgs();
+                args.Diff = this.diffTimeSpan;
+                args.Orig = this.originTimeSpan;
+                args.Expire = this.expire;
+                args.Alarm = this.alarm;
+                args.Pause = this.pause;
+                args.End = this.endSig;
+            Console.WriteLine("\n\n\n\n\n");
+            this.Update(this, args);
         }
 
         public void onStart()
@@ -216,6 +246,16 @@ namespace count_down_test_1
                 Console.WriteLine("Noew resuming...");
                 this.pause = true;
             }
+        }
+
+        public class UpdateEventArgs : EventArgs
+        {
+            public System.TimeSpan Diff { get; set; }
+            public System.TimeSpan Orig { get; set; }
+            public bool Expire  { get; set; }
+            public bool Alarm   { get; set; }
+            public bool Pause   { get; set; }
+            public bool End     { get; set; }
         }
     }
 }

@@ -69,6 +69,8 @@ namespace count_down_test_1
 
             }
 
+            this.onUpdated();
+
             Console.WriteLine("{0} - {1} = {2}, Alarm: {3}",
                 endTime, currentTime, diffTimeSpan.ToString(),
                 (alarm ? "Yes" : "No"));

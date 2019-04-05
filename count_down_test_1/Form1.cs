@@ -31,6 +31,7 @@ namespace count_down_test_1
             timer.Alarm += new Timer.AlarmEventHandler(AlarmReceiver);  
             timer.AfterAlarm += new Timer.AfterAlarmEventHandler(AfterAlarmReceiver);
             timer.End += new Timer.EndHandler(EndReceiver);
+            timer.Update += new Timer.UpdateHandler(UpdateReceiver);
         }
 
 
@@ -88,6 +89,30 @@ namespace count_down_test_1
             };
 
 
+            if (this.InvokeRequired)
+            {
+                ControlExtensions.UIThreadInvoke(this, delegate
+                {
+                    DoAction();
+                });
+            }
+            else
+            {
+                DoAction();
+            }
+        }
+
+        private void UpdateReceiver(object sender, Timer.UpdateEventArgs e)
+        {
+            Console.WriteLine("Just Update the timer.");
+            Action DoAction = delegate ()
+            {
+                this.textBox1.Clear();
+                double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
+                this.textBox1.AppendText(e.Pause ? "Paused " : "Running ");
+                this.textBox1.AppendText(e.Expire ? "Expired: " : "Left: ");
+                this.textBox1.AppendText(percent.ToString());
+            };
             if (this.InvokeRequired)
             {
                 ControlExtensions.UIThreadInvoke(this, delegate
