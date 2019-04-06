@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Newtonsoft.Json;
+using System.IO;
 
 namespace count_down_test_1
 {
@@ -11,24 +12,37 @@ namespace count_down_test_1
     {
         public System.DateTime startTime { get; set; }
         public System.DateTime endTime   { get; set; }
-        public System.DateTime currentTime{ get; set; }
+        public System.DateTime currentTime { get; set; }
+        public System.DateTime pauseTime { get; set; }
+
         public System.TimeSpan diffTimeSpan{ get; set; }
-        public System.TimeSpan originTimerSpan { get; set; }
+        public System.TimeSpan originTimeSpan { get; set; }
         public bool expire  { get; set; }
         public bool alarm   { get; set; }
         public bool endSig  { get; set; }
         public bool pause   { get; set; }
         public TimerOption timerOption      { get; set; }
 
-        public TimerConfigure(System.DateTime StartTime, System.DateTime EndTime, System.DateTime CurrentTime,
-                    System.TimeSpan DiffTimeSpan, System.TimeSpan OriginTimerSpan,
+        public TimerConfigure()
+        {
+            ;
+        }
+
+        public TimerConfigure(string path)
+        {
+            this.load(path);
+        }
+
+        public TimerConfigure(System.DateTime StartTime, System.DateTime EndTime, System.DateTime CurrentTime, System.DateTime PauseTime,
+                    System.TimeSpan DiffTimeSpan, System.TimeSpan OriginTimeSpan,
                     bool Expire, bool Alarm, bool EndSig, bool Pause, TimerOption TO)
         {
             startTime = StartTime;
             endTime = EndTime;
             currentTime = CurrentTime;
+            pauseTime = PauseTime;
             diffTimeSpan = DiffTimeSpan;
-            originTimerSpan = OriginTimerSpan;
+            originTimeSpan = OriginTimeSpan;
             expire = Expire;
             alarm = Alarm;
             endSig = EndSig;
@@ -47,9 +61,27 @@ namespace count_down_test_1
             }
         }
 
-        public void read(string path)
+        //  Read the json file from the path and build from it.
+        public void load(string path)
         {
-
+            TimerConfigure tc = new TimerConfigure();
+            string json;
+            using (StreamReader sr = new StreamReader(path))
+            {
+                json = sr.ReadToEnd();
+                Console.WriteLine("Read configure done.");
+                tc = JsonConvert.DeserializeObject<TimerConfigure>(json);
+                this.startTime = tc.startTime;
+                this.endTime = tc.endTime;
+                this.originTimeSpan = tc.originTimeSpan;
+                this.expire = tc.expire;
+                this.endSig = false;
+                this.alarm = tc.alarm;
+                this.pause = true;
+                this.timerOption = tc.timerOption;
+                this.diffTimeSpan = tc.diffTimeSpan;
+                this.pauseTime = tc.pauseTime;
+            }
         }
     }
 }

@@ -16,12 +16,24 @@ namespace count_down_test_1
     {
         private TimerDirection direction; //  Whether the timer grows to left or right
         private Timer timer;    //  The timer contained in this window.
+        private bool old;
 
+        //  Create a new one.
         public Form1()
         {
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
             this.timer = null;
+            this.old = false;
+        }
+        
+        //  Load an old one.
+        public Form1(string path)
+        {
+            InitializeComponent();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
+            this.timer = TimerBuildSwitcher(path);
+            this.old = true;
         }
 
         public void register_receivers()
@@ -142,7 +154,7 @@ namespace count_down_test_1
 
         private void CloseWindowsReceicer(object sender, EventArgs e)
         {
-            Console.WriteLine("/n/n/n/n/n/n/n/n/n");
+            Console.WriteLine("\n\n\n");
             if (this.timer != null)
             {
                 this.timer.onEnd();
@@ -164,9 +176,8 @@ namespace count_down_test_1
                 //this.timer = new TimingTimer(span, Timing);
                 //this.timer = new Timer(span, Normal);
                 //Timer timer = new Timer("./TimerConfig.json");
-                this.direction = TimerDirection.Right;    
                 this.register_receivers();
-
+                this.direction = TimerDirection.Right;                
                 Thread t1 = new Thread(new ThreadStart(timer.onStart));
                 t1.Start();
             }
@@ -174,14 +185,27 @@ namespace count_down_test_1
 
         private void button2_Click(object sender, EventArgs e)
         {
-            if(this.timer == null)
+            if (this.old == true)
             {
-                Console.WriteLine("Warning! The timer is no runing.");
-                MessageBox.Show("Warning! The timer is no runing.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
-            }
-            else {
+                this.old = false;
+                this.register_receivers();
+                this.direction = TimerDirection.Right;
+                Thread t1 = new Thread(new ThreadStart(timer.onStart));
                 this.timer.onPauseResume();
-            }          
+                t1.Start();              
+            }
+            else
+            {
+                if (this.timer == null)
+                {
+                    Console.WriteLine("Warning! The timer is no runing.");
+                    MessageBox.Show("Warning! The timer is no runing.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                }
+                else
+                {
+                    this.timer.onPauseResume();
+                }
+            }
         }
 
         private void refreshProgressBar(double per)
@@ -196,6 +220,30 @@ namespace count_down_test_1
                 per = 0;
             }
             this.progressBar1.Value = Convert.ToInt32(per * 100);
+        }
+
+        //  A function to call before a timer is built.
+        private static Timer TimerBuildSwitcher(string path)
+        {
+            TimerConfigure tc = new TimerConfigure(path);
+            Timer T = null;
+            switch (tc.timerOption)
+            {
+                case TimerOption.Normal:
+                    T = new Timer(path);
+                    break;
+                case TimerOption.Cycle:
+                    T = new CycleTimer(path);
+                    break;
+                case TimerOption.Timing:
+                    T = new TimingTimer(path);
+                    break;
+                default:
+                    Console.WriteLine("Something wrong.");
+                    MessageBox.Show("Warning! Something wrong", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+            return T;
         }
 
     }

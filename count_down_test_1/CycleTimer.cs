@@ -9,6 +9,10 @@ namespace count_down_test_1
     class CycleTimer: Timer
     {
 
+        public CycleTimer(string path = "./TimerConfig.json") : base(path) {; }
+
+        public CycleTimer(System.DateTime EndTime) : base(EndTime) {; }
+
         public CycleTimer(System.TimeSpan OriginTimeSpan, TimerOption timeroption) : base(
             OriginTimeSpan, timeroption)
         {; }

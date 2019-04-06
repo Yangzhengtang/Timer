@@ -12,6 +12,11 @@ namespace count_down_test_1
          *  The diffTime here has a different meaning !!!!!!!!!!!
          *  It means the time spent since the start time.
          */
+
+        public TimingTimer(string path = "./TimerConfig.json") : base(path) {; }
+
+        public TimingTimer(System.DateTime EndTime) : base(EndTime) {; }
+
         public TimingTimer(System.TimeSpan OriginTimeSpan, TimerOption timeroption) : base(
             OriginTimeSpan, timeroption){; }
 

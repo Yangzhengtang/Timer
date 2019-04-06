@@ -25,7 +25,7 @@ namespace count_down_test_1
         public event UpdateHandler Update;
 
         //  Properties
-        protected string configPath = "./TimerConfig.json";
+        //  protected string configPath = "./TimerConfig.json";
 
         protected System.DateTime startTime;
         protected System.DateTime endTime;
@@ -54,13 +54,15 @@ namespace count_down_test_1
                 this.timerConfigure = JsonConvert.DeserializeObject<TimerConfigure>(json);
                 this.startTime = this.timerConfigure.startTime;
                 this.endTime = this.timerConfigure.endTime;
-                this.originTimeSpan = this.timerConfigure.originTimerSpan;
+                this.originTimeSpan = this.timerConfigure.originTimeSpan;
                 this.expire = this.timerConfigure.expire;
-                this.endSig = this.timerConfigure.endSig;
+                this.endSig = false;
                 this.alarm = this.timerConfigure.alarm;
-                this.pause = this.timerConfigure.pause;
+                this.pause = true;
                 this.timerOption = this.timerConfigure.timerOption;
-                this.diffTimeSpan = new System.TimeSpan();
+                this.diffTimeSpan = this.timerConfigure.diffTimeSpan;
+                this.currentTime = System.DateTime.Now;
+                this.pauseTime = this.timerConfigure.pauseTime;
             }
         }
         
@@ -102,17 +104,14 @@ namespace count_down_test_1
         }
 
         //  Dump this Timer to a configure file (json)
-        public void dumpConfig(string path = null)
+        public void dumpConfig(string path = "./TimerConfig.json")
         {
             Console.WriteLine("dumping");
-            if (path == null)
-            {
-                path = configPath;
-            }
 
             this.timerConfigure = new TimerConfigure(this.startTime,
                                                      this.endTime,
                                                      this.currentTime,
+                                                     System.DateTime.Now,
                                                      this.diffTimeSpan,
                                                      this.originTimeSpan,
                                                      this.expire,
@@ -244,7 +243,8 @@ namespace count_down_test_1
         public void onEnd()
         {
             Console.WriteLine("Now ending");
-            endSig = true;
+            this.endSig = true;
+            this.pause = true;
             this.dumpConfig();
             this.End(this, new EventArgs());
         }

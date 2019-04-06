@@ -7,6 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using System.IO;
 
 namespace count_down_test_1
 {
@@ -17,11 +18,30 @@ namespace count_down_test_1
             InitializeComponent();
         }
 
+        private List<Timer> TimerList;
+        private List<string> ConfigurePathList;
+        private int index;
+        private static string SettingPath;
+        //  private TimerManagerSetting setting;
+
+        //  Initialize here.
         private void TimerManager_Load(object sender, EventArgs e)
         {
-
+            this.index = 1;
+            this.TimerList = new List<Timer>();
+            this.ConfigurePathList = new List<string>();
+            DirectoryInfo TheFolder = new DirectoryInfo("./");
+            foreach (FileInfo NextFile in TheFolder.GetFiles())
+            {
+                if( (NextFile.Name.IndexOf("TimerConfig")>-1)&& (NextFile.Extension.Equals(".json")) ){
+                    this.ConfigurePathList.Add(NextFile.FullName);
+                    this.index += 1;
+                }
+            }
+                
         }
 
+        //  Construct a new timer.
         private void button2_Click(object sender, EventArgs e)
         {
             Form1 T = new Form1();
@@ -30,10 +50,15 @@ namespace count_down_test_1
             //this.Hide();
             //Application.Run(new Program.MultiFormContext(new Form1(), new Form1()));
         }
-
+        
+        //  Load and Construct
         private void button1_Click(object sender, EventArgs e)
         {
-
+            foreach(string configpath in ConfigurePathList)
+            {
+                Form1 f = new Form1(configpath);
+                f.Show();
+            }
         }
 
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
