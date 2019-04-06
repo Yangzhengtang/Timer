@@ -12,4 +12,10 @@ namespace count_down_test_1
         Cycle  = 2, //  Cycle countdown timer.
         Timing = 3  //  Timing timer.
     }
+
+    enum TimerDirection
+    {
+        Left = 1,
+        Right = 2
+    }
 }

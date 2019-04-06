@@ -134,7 +134,7 @@ namespace count_down_test_1
         //  !!!!!!!!!!!!!!!!!!!!!!!! The timer duration is decided by the end time and current time !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         protected virtual void update()
         {
-            System.Threading.Thread.Sleep(1);
+            System.Threading.Thread.Sleep(10);
             currentTime = System.DateTime.Now;
 
             if ( expire == false)   //  Not expired

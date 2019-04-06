@@ -14,6 +14,7 @@ namespace count_down_test_1
 {
     public partial class Form1 : Form
     {
+        private TimerDirection direction; //  Whether the timer grows to left or right
         private Timer timer;    //  The timer contained in this window.
 
         public Form1()
@@ -104,6 +105,7 @@ namespace count_down_test_1
             Console.WriteLine("Just Update the timer.");
             Action DoAction = delegate ()
             {
+                
                 this.textBox1.Clear();
                 this.textBox1.AppendText(e.Pause ? "Paused " : "Running ");
 
@@ -116,6 +118,7 @@ namespace count_down_test_1
                         double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
                         this.textBox1.AppendText(e.Expire ? "Expired: " : "Left: ");
                         this.textBox1.AppendText(percent.ToString());
+                        this.refreshProgressBar(percent);
                         break;
                 }              
             };
@@ -146,20 +149,22 @@ namespace count_down_test_1
             }
         }
 
+        //  Start the timer, the ENTRANCE
         private void button1_Click(object sender, EventArgs e)
         {
             if( this.timer != null)
             {
                 Console.WriteLine("Warning! The timer already exists.");
-                MessageBox.Show("FBI WARNING", "Warning", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("Warning! The timer already exists.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else    // Create a timer and start running it.
             {  
-                System.TimeSpan span = new TimeSpan(0, 0, 10);
-                //this.timer = new CycleTimer(span, Cycle);
-                this.timer = new TimingTimer(span, Timing);
+                System.TimeSpan span = new TimeSpan(0, 5, 10);
+                this.timer = new CycleTimer(span, Cycle);
+                //this.timer = new TimingTimer(span, Timing);
                 //this.timer = new Timer(span, Normal);
                 //Timer timer = new Timer("./TimerConfig.json");
+                this.direction = TimerDirection.Right;    
                 this.register_receivers();
 
                 Thread t1 = new Thread(new ThreadStart(timer.onStart));
@@ -169,8 +174,30 @@ namespace count_down_test_1
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.timer.onPauseResume();
+            if(this.timer == null)
+            {
+                Console.WriteLine("Warning! The timer is no runing.");
+                MessageBox.Show("Warning! The timer is no runing.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else {
+                this.timer.onPauseResume();
+            }          
         }
+
+        private void refreshProgressBar(double per)
+        {
+            per = (this.direction == TimerDirection.Left) ? per : (1 - per);
+            if (per > 1)
+            {
+                per = 1;
+            }
+            if (per < 0)
+            {
+                per = 0;
+            }
+            this.progressBar1.Value = Convert.ToInt32(per * 100);
+        }
+
     }
 
     //  https://www.cnblogs.com/zhangguihua/p/9989376.html
