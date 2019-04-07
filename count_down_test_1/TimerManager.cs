@@ -113,8 +113,13 @@ namespace count_down_test_1
             Console.WriteLine("Just Update the timer.");
             Action DoAction = delegate ()
             {
-
                 
+                //Form1 T = new Form1();
+                //T.Show();
+                //this.Close();
+                //this.Hide();
+                //Application.Run(new Program.MultiFormContext(new Form1(), new Form1()));
+
             };
             if (this.InvokeRequired)
             {
