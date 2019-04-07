@@ -20,12 +20,13 @@ namespace count_down_test_1
         //  The overridden method.
         protected override void update()
         {
+            /*
             if(timerOption != TimerOption.Cycle)
             {
                 Console.WriteLine("What the fuck?");
                 this.onEnd();
                 return;
-            }
+            }   */
 
             System.Threading.Thread.Sleep(1);
             currentTime = System.DateTime.Now;
@@ -73,7 +74,7 @@ namespace count_down_test_1
         }
     
         //  After expired, the cycle timer will turn over to the beginning.
-        private void onCycleTurnOver()
+        protected virtual void onCycleTurnOver()
         {
             //startTime = startTime.Add(originTimeSpan);
             endTime = endTime.Add(originTimeSpan);

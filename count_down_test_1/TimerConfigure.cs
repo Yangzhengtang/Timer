@@ -62,7 +62,7 @@ namespace count_down_test_1
         }
 
         //  Read the json file from the path and build from it.
-        public void load(string path)
+        public virtual void load(string path)
         {
             TimerConfigure tc = new TimerConfigure();
             string json;
@@ -84,4 +84,48 @@ namespace count_down_test_1
             }
         }
     }
+
+    class CycleCount_TimerConfigure: TimerConfigure
+    {
+        public int limit { get; set; }
+        public int count { get; set; }
+
+        public CycleCount_TimerConfigure(): base() {; }
+
+        public CycleCount_TimerConfigure(string path): base(path){; }
+
+        public CycleCount_TimerConfigure(System.DateTime StartTime, System.DateTime EndTime, System.DateTime CurrentTime, System.DateTime PauseTime,
+                    System.TimeSpan DiffTimeSpan, System.TimeSpan OriginTimeSpan,
+                    bool Expire, bool Alarm, bool EndSig, bool Pause, TimerOption TO, int Limit, int Count):
+            base(StartTime, EndTime, CurrentTime, PauseTime,DiffTimeSpan, OriginTimeSpan, Expire, Alarm, EndSig, Pause, TO)
+        {
+            limit = Limit;
+            count = Count;
+        }
+
+        public override void load(string path)
+        {
+            CycleCount_TimerConfigure cctc = new CycleCount_TimerConfigure();
+            string json;
+            using (StreamReader sr = new StreamReader(path))
+            {
+                json = sr.ReadToEnd();
+                Console.WriteLine("Read configure done.");
+                cctc = JsonConvert.DeserializeObject<CycleCount_TimerConfigure>(json);
+                this.startTime = cctc.startTime;
+                this.endTime = cctc.endTime;
+                this.originTimeSpan = cctc.originTimeSpan;
+                this.expire = cctc.expire;
+                this.endSig = false;
+                this.alarm = cctc.alarm;
+                this.pause = true;
+                this.timerOption = cctc.timerOption;
+                this.diffTimeSpan = cctc.diffTimeSpan;
+                this.pauseTime = cctc.pauseTime;
+                this.limit = cctc.limit;
+                this.count = cctc.count;
+            }
+        }
+    }
+
 }

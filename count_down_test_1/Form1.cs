@@ -171,8 +171,9 @@ namespace count_down_test_1
             }
             else    // Create a timer and start running it.
             {  
-                System.TimeSpan span = new TimeSpan(0, 5, 10);
-                this.timer = new CycleTimer(span, Cycle);
+                System.TimeSpan span = new TimeSpan(0, 0, 10);
+                this.timer = new CycleCountTimer(span, CycleCount, 5);
+                //this.timer = new CycleTimer(span, Cycle);
                 //this.timer = new TimingTimer(span, Timing);
                 //this.timer = new Timer(span, Normal);
                 //Timer timer = new Timer("./TimerConfig.json");
@@ -237,6 +238,9 @@ namespace count_down_test_1
                     break;
                 case TimerOption.Timing:
                     T = new TimingTimer(path);
+                    break;
+                case TimerOption.CycleCount:
+                    T = new CycleCountTimer(path);
                     break;
                 default:
                     Console.WriteLine("Something wrong.");

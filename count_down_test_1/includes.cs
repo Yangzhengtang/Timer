@@ -10,7 +10,8 @@ namespace count_down_test_1
     {
         Normal = 1, //  Default countdown timer.
         Cycle  = 2, //  Cycle countdown timer.
-        Timing = 3  //  Timing timer.
+        Timing = 3, //  Timing timer.
+        CycleCount = 4  //  Cycle countdown timer, also record the times.
     }
 
     enum TimerDirection
