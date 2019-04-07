@@ -32,7 +32,7 @@ namespace count_down_test_1
                 this.diffTimeSpan = this.timerConfigure.diffTimeSpan;
                 this.currentTime = System.DateTime.Now;
                 this.pauseTime = this.timerConfigure.pauseTime;
-                this.limit = CCTC.limit;
+                this.limit = CCTC.limit-1;
                 this.count = CCTC.count;
             }
         }
@@ -62,5 +62,14 @@ namespace count_down_test_1
             }
         }
 
+        public override void dumpConfig(string path = "./TimerConfig.json")
+        {
+            Console.WriteLine("dumping");
+
+            this.timerConfigure = new CycleCount_TimerConfigure(this.startTime,this.endTime,this.currentTime,System.DateTime.Now,
+                                                     this.diffTimeSpan,this.originTimeSpan,this.expire,this.alarm,
+                                                     this.endSig,this.pause,this.timerOption,this.limit,this.count);
+            this.timerConfigure.dump(path);
+        }
     }
 }

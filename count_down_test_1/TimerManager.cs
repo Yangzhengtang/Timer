@@ -18,6 +18,7 @@ namespace count_down_test_1
             InitializeComponent();
         }
 
+        private TimerChooseUnit TCU;
         private List<Timer> TimerList;
         private List<string> ConfigurePathList;
         private int index;
@@ -44,8 +45,11 @@ namespace count_down_test_1
         //  Construct a new timer.
         private void button2_Click(object sender, EventArgs e)
         {
-            Form1 T = new Form1();
-            T.Show();
+            this.TCU = new TimerChooseUnit();
+            this.TCU.Show();
+            this.TCU.Chosen += new TimerChooseUnit.ChosenEventHandler(ChosenReceiver);
+            //Form1 T = new Form1();
+            //T.Show();
             //this.Close();
             //this.Hide();
             //Application.Run(new Program.MultiFormContext(new Form1(), new Form1()));
@@ -100,6 +104,28 @@ namespace count_down_test_1
                 this.Close();                  //关闭窗体
                 this.Dispose();                //释放资源
                 //Application.Exit();            //关闭应用程序窗体
+            }
+        }
+
+        //  Receive the event when start a timer in the TimerChooseUnit UI logic.
+        private void ChosenReceiver(object sender, TimerChooseUnit.ChosenEventArgs e)
+        {
+            Console.WriteLine("Just Update the timer.");
+            Action DoAction = delegate ()
+            {
+
+                
+            };
+            if (this.InvokeRequired)
+            {
+                ControlExtensions.UIThreadInvoke(this, delegate
+                {
+                    DoAction();
+                });
+            }
+            else
+            {
+                DoAction();
             }
         }
     }

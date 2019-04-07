@@ -37,29 +37,29 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(24, 25);
+            this.button1.Location = new System.Drawing.Point(29, 29);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(72, 29);
+            this.button1.Size = new System.Drawing.Size(121, 61);
             this.button1.TabIndex = 1;
-            this.button1.Text = "Start ";
+            this.button1.Text = "启动";
             this.button1.UseVisualStyleBackColor = true;
             this.button1.Click += new System.EventHandler(this.button1_Click);
             // 
             // textBox1
             // 
-            this.textBox1.Location = new System.Drawing.Point(236, 33);
+            this.textBox1.Location = new System.Drawing.Point(12, 114);
             this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(208, 21);
+            this.textBox1.Size = new System.Drawing.Size(511, 21);
             this.textBox1.TabIndex = 2;
             this.textBox1.TextChanged += new System.EventHandler(this.textBox1_TextChanged);
             // 
             // button2
             // 
-            this.button2.Location = new System.Drawing.Point(102, 25);
+            this.button2.Location = new System.Drawing.Point(156, 29);
             this.button2.Name = "button2";
-            this.button2.Size = new System.Drawing.Size(95, 29);
+            this.button2.Size = new System.Drawing.Size(119, 61);
             this.button2.TabIndex = 3;
-            this.button2.Text = "Pause/Resume";
+            this.button2.Text = "暂停/继续";
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
@@ -74,7 +74,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(538, 121);
+            this.ClientSize = new System.Drawing.Size(539, 141);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.textBox1);
             this.Controls.Add(this.button1);

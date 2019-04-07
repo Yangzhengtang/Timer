@@ -104,7 +104,7 @@ namespace count_down_test_1
         }
 
         //  Dump this Timer to a configure file (json)
-        public void dumpConfig(string path = "./TimerConfig.json")
+        public virtual void dumpConfig(string path = "./TimerConfig.json")
         {
             Console.WriteLine("dumping");
 

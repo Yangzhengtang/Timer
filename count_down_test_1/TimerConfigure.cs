@@ -50,7 +50,7 @@ namespace count_down_test_1
             timerOption = TO;
         }
 
-        public void dump(string path)
+        public virtual void dump(string path)
         {
             Console.WriteLine("Now dumping the configure to {0}",path);
             string json = JsonConvert.SerializeObject(this);
