@@ -14,9 +14,15 @@ namespace count_down_test_1
         CycleCount = 4  //  Cycle countdown timer, also record the times.
     }
 
-    enum TimerDirection
+    public enum TimerDirection
     {
         Left = 1,
         Right = 2
+    }
+
+    public enum ChooseStyle
+    {
+        TimeSpan = 1,
+        DateTime = 2
     }
 }

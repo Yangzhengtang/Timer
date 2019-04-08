@@ -70,6 +70,35 @@ namespace count_down_test_1
 
         }
 
+        //  Receive the event when start a timer in the TimerChooseUnit UI logic.
+        private void ChosenReceiver(object sender, TimerChooseUnit.ChosenEventArgs e)
+        {
+            Console.WriteLine("Just Selected and started the timer.");
+            Action DoAction = delegate ()
+            {
+                Form1 f = new Form1(e.duration, e.option);
+                f.Show();
+                this.TCU.Close();
+                //Form1 T = new Form1();
+                //T.Show();
+                //this.Close();
+                //this.Hide();
+                //Application.Run(new Program.MultiFormContext(new Form1(), new Form1()));
+
+            };
+            if (this.InvokeRequired)
+            {
+                ControlExtensions.UIThreadInvoke(this, delegate
+                {
+                    DoAction();
+                });
+            }
+            else
+            {
+                DoAction();
+            }
+        }
+
         //  https://blog.csdn.net/Eastmount/article/details/18604721 
         //  When closed by user, this main window will stay in the system tray.
         private void TimerManager_FormClosing(object sender, FormClosingEventArgs e)
@@ -105,33 +134,6 @@ namespace count_down_test_1
                 this.Dispose();                //释放资源
                 //Application.Exit();            //关闭应用程序窗体
             }
-        }
-
-        //  Receive the event when start a timer in the TimerChooseUnit UI logic.
-        private void ChosenReceiver(object sender, TimerChooseUnit.ChosenEventArgs e)
-        {
-            Console.WriteLine("Just Update the timer.");
-            Action DoAction = delegate ()
-            {
-                
-                //Form1 T = new Form1();
-                //T.Show();
-                //this.Close();
-                //this.Hide();
-                //Application.Run(new Program.MultiFormContext(new Form1(), new Form1()));
-
-            };
-            if (this.InvokeRequired)
-            {
-                ControlExtensions.UIThreadInvoke(this, delegate
-                {
-                    DoAction();
-                });
-            }
-            else
-            {
-                DoAction();
-            }
-        }
+        } 
     }
 }

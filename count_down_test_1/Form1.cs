@@ -18,13 +18,32 @@ namespace count_down_test_1
         private Timer timer;    //  The timer contained in this window.
         private bool old;
 
-        //  Create a new one.
+        //  The properties sent from choose unit.
+        private ChooseStyle ChooseStyle { get; set; }
+        private TimerOption option { get; set; }
+        private TimeSpan duration { get; set; }
+        private DateTime targetTime { get; set; }
+
+        //  Create a new one. Default constructor.
         public Form1()
         {
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
             this.timer = null;
             this.old = false;
+        }
+
+        //  Create a niew one, overload.
+        public Form1(System.TimeSpan OriginTimeSpan, TimerOption timeroption)
+        {
+            InitializeComponent();
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
+            this.timer = null;
+            this.old = false;
+            //  To build the timer.
+            this.option = timeroption;
+            this.duration = OriginTimeSpan;
+            this.ChooseStyle = ChooseStyle.TimeSpan;
         }
         
         //  Load an old one.
@@ -164,15 +183,21 @@ namespace count_down_test_1
         //  Start the timer, the ENTRANCE
         private void button1_Click(object sender, EventArgs e)
         {
-            if( this.timer != null)
+            if( this.timer != null) //  Reset, to be modified.
             {
                 Console.WriteLine("Warning! The timer already exists.");
                 MessageBox.Show("Warning! The timer already exists.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else    // Create a timer and start running it.
             {  
-                System.TimeSpan span = new TimeSpan(0, 0, 10);
-                this.timer = new CycleCountTimer(span, CycleCount, 5);
+                if(this.ChooseStyle == ChooseStyle.TimeSpan)
+                {
+                    this.timer = TimerBuildSwitcher(this.duration, this.option);
+                }
+
+                //  Origin test code: 
+                //System.TimeSpan span = new TimeSpan(0, 0, 10);
+                //this.timer = new CycleCountTimer(span, CycleCount, 5);
                 //this.timer = new CycleTimer(span, Cycle);
                 //this.timer = new TimingTimer(span, Timing);
                 //this.timer = new Timer(span, Normal);
@@ -223,7 +248,7 @@ namespace count_down_test_1
             this.progressBar1.Value = Convert.ToInt32(per * 100);
         }
 
-        //  A function to call before a timer is built.
+        //  A packed function to call before a timer is built.
         private static Timer TimerBuildSwitcher(string path)
         {
             TimerConfigure tc = new TimerConfigure(path);
@@ -245,6 +270,35 @@ namespace count_down_test_1
                 default:
                     Console.WriteLine("Something wrong.");
                     MessageBox.Show("Warning! Something wrong", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    break;
+            }
+            return T;
+        }
+
+        //  Overload
+        private static Timer TimerBuildSwitcher(System.TimeSpan OriginTimeSpan, TimerOption timeroption)
+        {
+            Timer T = null;
+            switch (timeroption)
+            {
+                case TimerOption.Normal:
+                    T = new Timer(OriginTimeSpan, timeroption);
+                    break;
+                case TimerOption.Cycle:
+                    T = new CycleTimer(OriginTimeSpan, timeroption);
+                    break;
+                case TimerOption.Timing:
+                    //  This might go wrong.
+                    T = new TimingTimer(OriginTimeSpan, timeroption);
+                    break;
+                case TimerOption.CycleCount:
+                    //  Here need to be modified, the limit should be sent from UI.
+                    T = new CycleCountTimer(OriginTimeSpan, timeroption, 5);
+                    break;
+                default:
+                    Console.WriteLine("Something wrong.");
+                    MessageBox.Show("Warning! Something wrong", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    T = new Timer(OriginTimeSpan, timeroption); //  Build a default timer.
                     break;
             }
             return T;

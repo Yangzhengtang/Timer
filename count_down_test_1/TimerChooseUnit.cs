@@ -15,8 +15,9 @@ namespace count_down_test_1
         private TimerOption option;
         private TimeSpan duration;
         private DateTime targetTime;
-        private DateTime tempDateTime;  //  A var to calculate the duration. 
-        private bool choseStyle;    //  The different choose style.
+        private DateTime tempDateTime_0;  //  A var to calculate the duration.
+        private DateTime tempDateTime_1;  //  A var to calculate the duration.
+        private ChooseStyle chooseStyle;    //  The different choose style.
         public delegate void ChosenEventHandler(object sender, ChosenEventArgs e);
         public event ChosenEventHandler Chosen;
 
@@ -24,7 +25,8 @@ namespace count_down_test_1
         {
             InitializeComponent();
             this.duration = DateTime.Now.Subtract(DateTime.Now);    //  Clear the duration
-            this.tempDateTime = DateTime.Now;   //  Give an initial temp time.
+            this.tempDateTime_0 = DateTime.Now;   //  Give an initial temp time.
+            this.tempDateTime_1 = this.tempDateTime_0;
         }
 
         private void TimerChooseUnit_Load(object sender, EventArgs e)
@@ -54,17 +56,28 @@ namespace count_down_test_1
 
         private void button2_Click(object sender, EventArgs e)
         {
-            this.tempDateTime = this.tempDateTime.AddHours(Convert.ToDouble(HourBox.Text));
-            this.tempDateTime = this.tempDateTime.AddMinutes(Convert.ToDouble(MinBox.Text));
-            this.tempDateTime = this.tempDateTime.AddSeconds(Convert.ToDouble(SecBox.Text));
-            this.choseStyle = true;
+            try
+            {
+                this.tempDateTime_1 = this.tempDateTime_1.AddHours(Convert.ToDouble(HourBox.Text));
+                this.tempDateTime_1 = this.tempDateTime_1.AddMinutes(Convert.ToDouble(MinBox.Text));
+                this.tempDateTime_1 = this.tempDateTime_1.AddSeconds(Convert.ToDouble(SecBox.Text));
+            }
+            catch (System.FormatException)
+            {
+                Console.WriteLine("Warning! Haven't input the duration yet.");
+                MessageBox.Show("请输入正确格式", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                return;
+            }
+
+            this.duration = this.tempDateTime_1.Subtract(this.tempDateTime_0); 
+            this.chooseStyle = ChooseStyle.TimeSpan;
             this.OnChosen();
         }
 
         public void OnChosen()
         {
             ChosenEventArgs args = new ChosenEventArgs();
-            args.choseStyle = this.choseStyle;
+            args.chooseStyle = this.chooseStyle;
             args.option = this.option;
             args.targetTime = this.targetTime;
             args.duration = this.duration;
@@ -73,7 +86,7 @@ namespace count_down_test_1
 
         public class ChosenEventArgs : EventArgs
         {
-            public bool choseStyle { get; set; }
+            public ChooseStyle chooseStyle { get; set; }
             public TimerOption option { get; set; }
             public TimeSpan duration { get; set; }
             public DateTime targetTime { get; set; }
