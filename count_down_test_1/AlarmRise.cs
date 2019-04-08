@@ -12,7 +12,7 @@ namespace count_down_test_1
 {
     public partial class AlarmRise : Form
     {
-        private Sound sound = new Sound(@"C:\Users\lenovo\Desktop\count_down_test_1.1\count_down_test_1\SoundSource\beep.mp3");
+        private Sound sound = new Sound();
         // to be replaced by SoundManager
 
         public AlarmRise()
@@ -28,6 +28,11 @@ namespace count_down_test_1
         {
             this.sound.mciStop();
             Close();//close the form
+        }
+
+        private void AlarmRise_FormClosing(object sender, FormClosingEventArgs e)
+        {
+            this.sound.mciStop();
         }
     }
 }

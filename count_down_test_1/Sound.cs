@@ -56,7 +56,7 @@ namespace count_down_test_1
               
         public Sound()
         {
-            SoundPath = @"C: \Users\lenovo\Desktop\count_down_test_1.1\count_down_test_1\SoundSource\beep.mp3";
+            SoundPath = System.Environment.CurrentDirectory + "\\beep.mp3";
         }
 
         public static bool Play(string strFileName)

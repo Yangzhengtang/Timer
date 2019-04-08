@@ -61,6 +61,7 @@
             this.Controls.Add(this.button1);
             this.Name = "AlarmRise";
             this.Text = "Form2";
+            this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AlarmRise_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();
 
