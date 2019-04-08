@@ -13,6 +13,7 @@ namespace count_down_test_1
     public partial class TimerChooseUnit : Form
     {
         private TimerOption option;
+        private int Cycle_limit;    //  The property of the Cycle count timer.
         private TimeSpan duration;
         private DateTime targetTime;
         private DateTime tempDateTime_0;  //  A var to calculate the duration.
@@ -58,11 +59,14 @@ namespace count_down_test_1
 
         private void button2_Click(object sender, EventArgs e)
         {
+            this.chooseStyle = ChooseStyle.TimeSpan;
             try
             {
                 this.tempDateTime_1 = this.tempDateTime_1.AddHours(Convert.ToDouble(HourBox.Text));
                 this.tempDateTime_1 = this.tempDateTime_1.AddMinutes(Convert.ToDouble(MinBox.Text));
                 this.tempDateTime_1 = this.tempDateTime_1.AddSeconds(Convert.ToDouble(SecBox.Text));
+                if(this.option == TimerOption.CycleCount) {this.Cycle_limit = Convert.ToInt32(CountBox.Text);}
+                else { this.Cycle_limit = 0; }
             }
             catch (System.FormatException)
             {
@@ -70,9 +74,7 @@ namespace count_down_test_1
                 MessageBox.Show("请输入正确格式", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-
-            this.duration = this.tempDateTime_1.Subtract(this.tempDateTime_0); 
-            this.chooseStyle = ChooseStyle.TimeSpan;
+            this.duration = this.tempDateTime_1.Subtract(this.tempDateTime_0);
             this.OnChosen();
         }
 
@@ -83,11 +85,13 @@ namespace count_down_test_1
             args.option = this.option;
             args.targetTime = this.targetTime;
             args.duration = this.duration;
+            args.cycle_limit = this.Cycle_limit;
             this.Chosen(this, args);
         }
 
         public class ChosenEventArgs : EventArgs
         {
+            public int cycle_limit { get; set; }
             public ChooseStyle chooseStyle { get; set; }
             public TimerOption option { get; set; }
             public TimeSpan duration { get; set; }

@@ -37,7 +37,7 @@
             this.label2 = new System.Windows.Forms.Label();
             this.label3 = new System.Windows.Forms.Label();
             this.button2 = new System.Windows.Forms.Button();
-            this.textBox1 = new System.Windows.Forms.TextBox();
+            this.CountBox = new System.Windows.Forms.TextBox();
             this.label4 = new System.Windows.Forms.Label();
             this.label5 = new System.Windows.Forms.Label();
             this.SuspendLayout();
@@ -117,12 +117,12 @@
             this.button2.UseVisualStyleBackColor = true;
             this.button2.Click += new System.EventHandler(this.button2_Click);
             // 
-            // textBox1
+            // CountBox
             // 
-            this.textBox1.Location = new System.Drawing.Point(79, 51);
-            this.textBox1.Name = "textBox1";
-            this.textBox1.Size = new System.Drawing.Size(87, 21);
-            this.textBox1.TabIndex = 10;
+            this.CountBox.Location = new System.Drawing.Point(79, 51);
+            this.CountBox.Name = "CountBox";
+            this.CountBox.Size = new System.Drawing.Size(87, 21);
+            this.CountBox.TabIndex = 10;
             // 
             // label4
             // 
@@ -151,7 +151,7 @@
             this.ClientSize = new System.Drawing.Size(385, 83);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label4);
-            this.Controls.Add(this.textBox1);
+            this.Controls.Add(this.CountBox);
             this.Controls.Add(this.button2);
             this.Controls.Add(this.label3);
             this.Controls.Add(this.label2);
@@ -180,7 +180,7 @@
         private System.Windows.Forms.Label label2;
         private System.Windows.Forms.Label label3;
         private System.Windows.Forms.Button button2;
-        private System.Windows.Forms.TextBox textBox1;
+        private System.Windows.Forms.TextBox CountBox;
         private System.Windows.Forms.Label label4;
         private System.Windows.Forms.Label label5;
     }

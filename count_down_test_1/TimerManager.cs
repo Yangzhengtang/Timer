@@ -105,7 +105,7 @@ namespace count_down_test_1
             Console.WriteLine("Just Selected and started the timer.");
             Action DoAction = delegate ()
             {
-                Form1 f = new Form1(e.duration, e.option);
+                Form1 f = new Form1(e.duration, e.option, e.cycle_limit);
                 f.Show();
                 this.TCU.Close();
             };

@@ -209,6 +209,12 @@ namespace count_down_test_1
             this.Update(this, args);
         }
 
+        public void reset()
+        {
+            startTime = System.DateTime.Now;
+            endTime = startTime.Add(originTimeSpan);
+        }
+
         //  Activate the timer.
         public void onStart()
         {
@@ -231,7 +237,6 @@ namespace count_down_test_1
         {
             Console.WriteLine("Alarming !!!");
             this.Alarm(this, new EventArgs());   //send Alarming event
-            this.dumpConfig();  //  Save the configure
         }
 
         public void onAfterAlarm()
@@ -245,7 +250,7 @@ namespace count_down_test_1
             Console.WriteLine("Now ending");
             this.endSig = true;
             this.pause = true;
-            this.dumpConfig();
+            this.dumpConfig();  //  TODO: add a windows, let the user choose whether to save the timer.
             this.End(this, new EventArgs());
         }
 

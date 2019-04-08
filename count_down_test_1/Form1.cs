@@ -23,6 +23,7 @@ namespace count_down_test_1
         private TimerOption option { get; set; }
         private TimeSpan duration { get; set; }
         private DateTime targetTime { get; set; }
+        private int count_limit { get; set; }
 
         //  Create a new one. Default constructor.
         public Form1()
@@ -34,7 +35,7 @@ namespace count_down_test_1
         }
 
         //  Create a niew one, overload.
-        public Form1(System.TimeSpan OriginTimeSpan, TimerOption timeroption)
+        public Form1(System.TimeSpan OriginTimeSpan, TimerOption timeroption, int CountLimit)
         {
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
@@ -44,8 +45,9 @@ namespace count_down_test_1
             this.option = timeroption;
             this.duration = OriginTimeSpan;
             this.ChooseStyle = ChooseStyle.TimeSpan;
+            this.count_limit = CountLimit;
         }
-        
+
         //  Load an old one.
         public Form1(string path)
         {
@@ -53,6 +55,8 @@ namespace count_down_test_1
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
             this.timer = TimerBuildSwitcher(path);
             this.old = true;
+            this.register_receivers();
+            this.timer.onUpdated();
         }
 
         public void register_receivers()
@@ -169,11 +173,6 @@ namespace count_down_test_1
             }
         }
 
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
         private void CloseWindowsReceicer(object sender, EventArgs e)
         {
             Console.WriteLine("\n\n\n");
@@ -189,14 +188,16 @@ namespace count_down_test_1
             if( this.timer != null) //  Reset, to be modified.
             {
                 Console.WriteLine("Warning! The timer already exists.");
-                MessageBox.Show("Warning! The timer already exists.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                //  MessageBox.Show("Warning! The timer already exists.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                this.timer.reset();
             }
             else    // Create a timer and start running it.
             {  
                 if(this.ChooseStyle == ChooseStyle.TimeSpan)
                 {
-                    this.timer = TimerBuildSwitcher(this.duration, this.option);
+                    this.timer = TimerBuildSwitcher(this.duration, this.option,this.count_limit);
                 }
+                //  初始化和开始没有分离，导致加载时可能无法显示界面
 
                 //  Origin test code: 
                 //System.TimeSpan span = new TimeSpan(0, 0, 10);
@@ -212,12 +213,12 @@ namespace count_down_test_1
             }
         }
 
+        //  Pause/Continue,check whether the timer is loaded first. 
         private void button2_Click(object sender, EventArgs e)
         {
             if (this.old == true)
             {
                 this.old = false;
-                this.register_receivers();
                 this.direction = TimerDirection.Right;
                 Thread t1 = new Thread(new ThreadStart(timer.onStart));
                 this.timer.onPauseResume();
@@ -237,7 +238,7 @@ namespace count_down_test_1
             }
         }
 
-        private void refreshProgressBar(double per)
+        public void refreshProgressBar(double per)
         {
             per = (this.direction == TimerDirection.Left) ? per : (1 - per);
             if (per > 1)
@@ -272,7 +273,7 @@ namespace count_down_test_1
                     break;
                 default:
                     Console.WriteLine("Something wrong.");
-                    MessageBox.Show("未选择计时器种类，使用默认计时器", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //  MessageBox.Show("未选择计时器种类，使用默认计时器", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     T = new Timer(path); //  Build a default timer.
                     break;
             }
@@ -280,7 +281,7 @@ namespace count_down_test_1
         }
 
         //  Overload
-        private static Timer TimerBuildSwitcher(System.TimeSpan OriginTimeSpan, TimerOption timeroption)
+        private static Timer TimerBuildSwitcher(System.TimeSpan OriginTimeSpan, TimerOption timeroption,int cycle_limit=0)
         {
             Timer T = null;
             switch (timeroption)
@@ -297,17 +298,24 @@ namespace count_down_test_1
                     break;
                 case TimerOption.CycleCount:
                     //  Here need to be modified, the limit should be sent from UI.
-                    T = new CycleCountTimer(OriginTimeSpan, timeroption, 5);
+                    T = new CycleCountTimer(OriginTimeSpan, timeroption, cycle_limit);
                     break;
                 default:
                     Console.WriteLine("Something wrong.");
-                    MessageBox.Show("未选择计时器种类，使用默认计时器", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    //  MessageBox.Show("未选择计时器种类，使用默认计时器", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
                     T = new Timer(OriginTimeSpan, TimerOption.Normal); //  Build a default timer.
                     break;
             }
             return T;
         }
 
+        /*   EMPTY！
+         * 
+         */
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
     //  https://www.cnblogs.com/zhangguihua/p/9989376.html
