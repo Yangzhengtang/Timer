@@ -71,6 +71,9 @@ namespace count_down_test_1
             {
                 textBox1.Clear();
                 textBox1.AppendText("Alarming!");
+                TopMost = true;  //Window jump to the top when alarming.
+                AlarmRise alarmRise = new AlarmRise();
+                alarmRise.Show();
                 //System.Threading.Thread.Sleep(10);
                 //textBox1.Clear();
             };
