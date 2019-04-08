@@ -272,7 +272,8 @@ namespace count_down_test_1
                     break;
                 default:
                     Console.WriteLine("Something wrong.");
-                    MessageBox.Show("Warning! Something wrong", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    MessageBox.Show("未选择计时器种类，使用默认计时器", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    T = new Timer(path); //  Build a default timer.
                     break;
             }
             return T;
@@ -300,8 +301,8 @@ namespace count_down_test_1
                     break;
                 default:
                     Console.WriteLine("Something wrong.");
-                    MessageBox.Show("Warning! Something wrong", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                    T = new Timer(OriginTimeSpan, timeroption); //  Build a default timer.
+                    MessageBox.Show("未选择计时器种类，使用默认计时器", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    T = new Timer(OriginTimeSpan, TimerOption.Normal); //  Build a default timer.
                     break;
             }
             return T;

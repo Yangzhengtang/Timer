@@ -31,7 +31,9 @@ namespace count_down_test_1
 
         private void TimerChooseUnit_Load(object sender, EventArgs e)
         {
-
+            this.HourBox.Text = "0";
+            this.MinBox.Text = "3";
+            this.SecBox.Text = "0";
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -90,6 +92,21 @@ namespace count_down_test_1
             public TimerOption option { get; set; }
             public TimeSpan duration { get; set; }
             public DateTime targetTime { get; set; }
+        }
+
+        private void label4_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label5_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void TimerChooseUnit_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
         }
     }
 }

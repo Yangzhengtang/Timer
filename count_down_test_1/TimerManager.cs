@@ -39,20 +39,25 @@ namespace count_down_test_1
                     this.index += 1;
                 }
             }
+            this.TCU = null;
                 
         }
 
-        //  Construct a new timer.
+        //  Construct a new ChooseUnit.
         private void button2_Click(object sender, EventArgs e)
         {
-            this.TCU = new TimerChooseUnit();
-            this.TCU.Show();
-            this.TCU.Chosen += new TimerChooseUnit.ChosenEventHandler(ChosenReceiver);
-            //Form1 T = new Form1();
-            //T.Show();
-            //this.Close();
-            //this.Hide();
-            //Application.Run(new Program.MultiFormContext(new Form1(), new Form1()));
+            if(this.TCU != null)    //  There's already a choose unit open from this manager. Stop it.
+            {
+                Console.WriteLine("Warning! Already started a choose unit.");
+                MessageBox.Show("请通过选项界面输入", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            else    //  Otherwise, start a new choose unit.
+            {
+                this.TCU = new TimerChooseUnit();
+                this.TCU.Show();
+                this.TCU.Chosen += new TimerChooseUnit.ChosenEventHandler(ChosenReceiver);
+                this.TCU.FormClosed += new FormClosedEventHandler(ClosedEventReceiver);
+            }
         }
         
         //  Load and Construct
@@ -70,6 +75,30 @@ namespace count_down_test_1
 
         }
 
+        //  Run when the choose unit is closed.
+        private void ClosedEventReceiver(object sender, FormClosedEventArgs e)
+        {
+            Action DoAction = delegate ()
+            {
+                if (this.TCU != null)
+                {
+                    this.TCU = null;                  
+                }
+            };
+            if (this.InvokeRequired)
+            {
+                ControlExtensions.UIThreadInvoke(this, delegate
+                {
+                    DoAction();
+                });
+            }
+            else
+            {
+                DoAction();
+            }
+        }
+
+
         //  Receive the event when start a timer in the TimerChooseUnit UI logic.
         private void ChosenReceiver(object sender, TimerChooseUnit.ChosenEventArgs e)
         {
@@ -79,12 +108,6 @@ namespace count_down_test_1
                 Form1 f = new Form1(e.duration, e.option);
                 f.Show();
                 this.TCU.Close();
-                //Form1 T = new Form1();
-                //T.Show();
-                //this.Close();
-                //this.Hide();
-                //Application.Run(new Program.MultiFormContext(new Form1(), new Form1()));
-
             };
             if (this.InvokeRequired)
             {
