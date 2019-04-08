@@ -145,17 +145,16 @@ namespace count_down_test_1
             {
                 
                 this.textBox1.Clear();
-                this.textBox1.AppendText(e.Pause ? "Paused " : "Running ");
 
                 switch (this.timer.timerOption)
                 {
                     case TimerOption.Timing:
-                        this.textBox1.AppendText("Passed:" + e.Diff.ToString());
+                        this.textBox1.AppendText(e.Diff.ToString("g"));
                         break;
                     default:
                         double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
-                        this.textBox1.AppendText(e.Expire ? "Expired: " : "Left: ");
-                        this.textBox1.AppendText(percent.ToString());
+                        //  this.textBox1.AppendText(e.Expire ? "Expired: " : "Left: ");
+                        this.textBox1.AppendText(e.Diff.ToString("hh'小时'mm'分钟'ss'秒'fff'毫秒'"));
                         this.refreshProgressBar(percent);
                         break;
                 }              
