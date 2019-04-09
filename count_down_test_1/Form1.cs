@@ -19,6 +19,7 @@ namespace count_down_test_1
         private Timer timer;    //  The timer contained in this window.
         private bool old;   //  Whether the timer is loaded from dumpfile.
         private AlarmRise alarmRise;
+        private string alarmWords;
 
         //  The properties sent from choose unit.
         //  Used to build new timer.
@@ -35,6 +36,9 @@ namespace count_down_test_1
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
             this.timer = null;
             this.old = false;
+            this.refreshProgressBar(1); //  For User Experience
+            this.displayer.AppendText("00:00:00.000");
+            this.button1.Text = "Start";
         }
 
         //  Create a niew one, overload.
@@ -49,6 +53,9 @@ namespace count_down_test_1
             this.duration = OriginTimeSpan;
             this.ChooseStyle = ChooseStyle.TimeSpan;
             this.count_limit = CountLimit;
+            this.refreshProgressBar(1); //  For User Experience
+            this.displayer.AppendText(OriginTimeSpan.ToString("hh':'mm':'ss'.'fff"));
+            this.button1.Text = "Start";
         }
 
         //  Load an old one.
@@ -60,6 +67,7 @@ namespace count_down_test_1
             this.old = true;
             this.register_receivers();
             this.timer.onUpdated();
+            this.button1.Text = "Reset";
         }
 
         //  register all the receivers of the timer 
@@ -79,7 +87,7 @@ namespace count_down_test_1
                 textBox1.Clear();
                 textBox1.AppendText("Alarming!");
                 TopMost = true;  //Window jump to the top when alarming.
-                this.alarmRise = new AlarmRise();
+                this.alarmRise = new AlarmRise(this.alarmWords);
                 this.alarmRise.Show();
                 //System.Threading.Thread.Sleep(10);
                 //textBox1.Clear();
@@ -231,8 +239,9 @@ namespace count_down_test_1
                 this.timer.reset();
             }
             else    // Create a timer and start running it.
-            {  
-                if(this.ChooseStyle == ChooseStyle.TimeSpan)
+            {
+                this.button1.Text = "Reset";
+                if (this.ChooseStyle == ChooseStyle.TimeSpan)
                 {
                     this.timer = TimerBuildSwitcher(this.duration, this.option,this.count_limit);
                 }
@@ -255,6 +264,14 @@ namespace count_down_test_1
         //  Pause/Continue,check whether the timer is loaded first. 
         private void button2_Click(object sender, EventArgs e)
         {
+            if(button2.Text == "Pause")
+            {
+                button2.Text = "Resume";
+            }
+            else
+            {
+                button2.Text = "Pause";
+            }
             if (this.old == true)
             {
                 this.old = false;
@@ -284,26 +301,26 @@ namespace count_down_test_1
             {
                 if (per >= 1)
                 {
-                    this.progressBar1.SetState(2);
+                    ProgressFront.BackColor = Color.Red;
                     per = 1;
                 }
                 else
                 {
-                    this.progressBar1.SetState(3);
+                    ProgressFront.BackColor = Color.Yellow;
                 }
             }
             else
             {
-                this.progressBar1.SetState(1);
+                ProgressFront.BackColor = Color.Green;
             }
 
             if (per < 0)
             {
                 per = 0;
             }
-
-            this.progressBar1.Value = Convert.ToInt32(per * 100);
-            this.progressBar1.Refresh();
+            ProgressFront.Width = (int)(ProgressBack.Width * per);
+            ProgressFront.Refresh();
+            ProgressBack.Refresh();
         }
 
         //  A packed function to call before a timer is built.
@@ -374,6 +391,11 @@ namespace count_down_test_1
         private void displayer_TextChanged(object sender, EventArgs e)
         {
 
+        }
+
+        private void textBox2_TextChanged(object sender, EventArgs e)
+        {
+            this.alarmWords = textBox2.Text;
         }
     }
 

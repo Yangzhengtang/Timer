@@ -132,7 +132,7 @@ namespace count_down_test_1
         //  !!!!!!!!!!!!!!!!!!!!!!!! The timer duration is decided by the end time and current time !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
         protected virtual void update()
         {
-            System.Threading.Thread.Sleep(10);
+            System.Threading.Thread.Sleep(20);
             currentTime = System.DateTime.Now;
 
             if ( expire == false)   //  Not expired
@@ -161,7 +161,7 @@ namespace count_down_test_1
             else // expired
             {
                 diffTimeSpan = currentTime.Subtract(endTime);
-                if(diffTimeSpan.TotalMilliseconds > 3000)    //  not alarming
+                if(diffTimeSpan.TotalMilliseconds > 3000)    // Stop alarming
                 {
                     if (this.alarm)
                     {
@@ -169,8 +169,6 @@ namespace count_down_test_1
                         onAfterAlarm();
                     }
                 }
-                
-
             }
 
             // Send the update event.

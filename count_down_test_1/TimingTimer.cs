@@ -30,7 +30,7 @@ namespace count_down_test_1
                 return;
             }
 
-            System.Threading.Thread.Sleep(1);
+            System.Threading.Thread.Sleep(20);
             this.currentTime = System.DateTime.Now;
             this.diffTimeSpan = this.currentTime.Subtract(this.startTime);
 

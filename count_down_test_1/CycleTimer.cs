@@ -28,7 +28,7 @@ namespace count_down_test_1
                 return;
             }   */
 
-            System.Threading.Thread.Sleep(1);
+            System.Threading.Thread.Sleep(20);
             currentTime = System.DateTime.Now;
 
             if (expire == false)   //  Not expired yet
@@ -36,15 +36,13 @@ namespace count_down_test_1
                 if (currentTime.CompareTo(endTime) <= 0) // Still not expire
                 {
                     diffTimeSpan = endTime.Subtract(currentTime);
-                    if (diffTimeSpan.TotalMilliseconds < 100)    // Ready to expire, still not expire yet.
+                    if((currentTime.Subtract(startTime)).TotalMilliseconds > 3000)  //  Stop alarming, this may cause error.
                     {
-                        expire = true;
-                        alarm = true;
-                        onAlarm();
-                    }
-                    else
-                    {
-                        ;
+                        if (this.alarm)
+                        {
+                            this.alarm = false;
+                            onAfterAlarm();
+                        }
                     }
                 }
                 else   // Turn to expire, now it's already expired
@@ -61,7 +59,6 @@ namespace count_down_test_1
                 diffTimeSpan = currentTime.Subtract(endTime);
                 if (diffTimeSpan.TotalMilliseconds > 100)    //  not alarming
                 {
-                    onAfterAlarm();
                     onCycleTurnOver();
                 }
             }
@@ -76,11 +73,11 @@ namespace count_down_test_1
         //  After expired, the cycle timer will turn over to the beginning.
         protected virtual void onCycleTurnOver()
         {
-            //startTime = startTime.Add(originTimeSpan);
+            startTime = startTime.Add(originTimeSpan);
             endTime = endTime.Add(originTimeSpan);
             diffTimeSpan = originTimeSpan;
             expire = false;
-            alarm = false;
+            alarm = true;
             endSig = false;
         }
     }

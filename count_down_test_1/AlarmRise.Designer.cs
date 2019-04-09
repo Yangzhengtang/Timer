@@ -35,9 +35,10 @@
             // 
             // button1
             // 
-            this.button1.Location = new System.Drawing.Point(122, 74);
+            this.button1.Font = new System.Drawing.Font("Baskerville Old Face", 9F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.button1.Location = new System.Drawing.Point(99, 62);
             this.button1.Name = "button1";
-            this.button1.Size = new System.Drawing.Size(75, 23);
+            this.button1.Size = new System.Drawing.Size(75, 34);
             this.button1.TabIndex = 0;
             this.button1.Text = "OK";
             this.button1.UseVisualStyleBackColor = true;
@@ -46,23 +47,26 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("宋体", 20F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(134)));
-            this.label1.Location = new System.Drawing.Point(83, 31);
+            this.label1.Font = new System.Drawing.Font("Baskerville Old Face", 39.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(1, -3);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(166, 27);
+            this.label1.Size = new System.Drawing.Size(269, 61);
             this.label1.TabIndex = 1;
             this.label1.Text = "Time is up!";
+            this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
             // AlarmRise
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(332, 128);
+            this.ClientSize = new System.Drawing.Size(271, 108);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.button1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
+            this.Location = new System.Drawing.Point(50, 50);
             this.Name = "AlarmRise";
-            this.Text = "Form2";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
+            this.Text = "Here comes the Sun.";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AlarmRise_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

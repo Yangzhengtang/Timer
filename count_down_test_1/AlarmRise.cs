@@ -15,13 +15,13 @@ namespace count_down_test_1
         private Sound sound = new Sound();
         // to be replaced by SoundManager
 
-        public AlarmRise()
+        public AlarmRise(string showWords="Time is up!")
         {
             InitializeComponent();
+            this.label1.Text = showWords;
             //string PathOfSound;
             TopMost = true;
             this.sound.mciPlay();
-
         }
 
         private void button1_Click(object sender, EventArgs e)
