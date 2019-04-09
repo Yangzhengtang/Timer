@@ -180,6 +180,7 @@
             this.Controls.Add(this.comboBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.Name = "TimerChooseUnit";
+            this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "TimerChooseUnit";
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TimerChooseUnit_FormClosed);
             this.Load += new System.EventHandler(this.TimerChooseUnit_Load);

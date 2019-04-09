@@ -47,10 +47,10 @@
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Baskerville Old Face", 39.75F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(1, -3);
+            this.label1.Font = new System.Drawing.Font("Baskerville Old Face", 30F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label1.Location = new System.Drawing.Point(28, 14);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(269, 61);
+            this.label1.Size = new System.Drawing.Size(202, 45);
             this.label1.TabIndex = 1;
             this.label1.Text = "Time is up!";
             this.label1.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
@@ -66,7 +66,7 @@
             this.Location = new System.Drawing.Point(50, 50);
             this.Name = "AlarmRise";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "Here comes the Sun.";
+            this.Text = "Wow!";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AlarmRise_FormClosing);
             this.ResumeLayout(false);
             this.PerformLayout();

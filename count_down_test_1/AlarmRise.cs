@@ -34,11 +34,5 @@ namespace count_down_test_1
         {
             this.sound.mciStop();
         }
-
-        public void Close_in_5_secs()
-        {
-            System.Threading.Thread.Sleep(5000);
-            this.Close();
-        }
     }
 }

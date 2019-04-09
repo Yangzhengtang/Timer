@@ -20,6 +20,9 @@ namespace count_down_test_1
         private bool old;   //  Whether the timer is loaded from dumpfile.
         private AlarmRise alarmRise;
         private string alarmWords;
+        private AlarmOffStyle alarmOffStyle = AlarmOffStyle.Auto;
+        private Theme theme = Theme.Default;
+        private ThemeColors themeColors;
 
         //  The properties sent from choose unit.
         //  Used to build new timer.
@@ -32,6 +35,7 @@ namespace count_down_test_1
         //  Create a new one. Default constructor.
         public Form1()
         {
+            this.themeColors = new ThemeColors();
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
             this.timer = null;
@@ -44,6 +48,7 @@ namespace count_down_test_1
         //  Create a niew one, overload.
         public Form1(System.TimeSpan OriginTimeSpan, TimerOption timeroption, int CountLimit)
         {
+            this.themeColors = new ThemeColors();
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
             this.timer = null;
@@ -61,6 +66,7 @@ namespace count_down_test_1
         //  Load an old one.
         public Form1(string path)
         {
+            this.themeColors = new ThemeColors();
             InitializeComponent();
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(CloseWindowsReceicer);
             this.timer = TimerBuildSwitcher(path);
@@ -68,6 +74,7 @@ namespace count_down_test_1
             this.register_receivers();
             this.timer.onUpdated();
             this.button1.Text = "Reset";
+            this.button2.Text = "Resume";
         }
 
         //  register all the receivers of the timer 
@@ -86,7 +93,8 @@ namespace count_down_test_1
             {
                 textBox1.Clear();
                 textBox1.AppendText("Alarming!");
-                TopMost = true;  //Window jump to the top when alarming.
+                this.TopMost = true;  //Window jump to the top when alarming.
+                this.Show();
                 this.alarmRise = new AlarmRise(this.alarmWords);
                 this.alarmRise.Show();
                 //System.Threading.Thread.Sleep(10);
@@ -110,14 +118,16 @@ namespace count_down_test_1
             Console.WriteLine("Just after alarm.");
             Action DoAction = delegate ()
             {
-                if(this.alarmRise != null)
+                if(this.alarmOffStyle == AlarmOffStyle.Auto)
                 {
-                    this.alarmRise.Close();
-                    //Thread t = new Thread(new ThreadStart(this.alarmRise.Close_in_5_secs));
-                }
-                else
-                {
-                    Console.WriteLine("WTF!");
+                    if (this.alarmRise != null)
+                    {
+                        this.alarmRise.Close();
+                    }
+                    else
+                    {
+                        Console.WriteLine("WTF!");
+                    }
                 }
                 textBox1.Clear();
             };
@@ -296,28 +306,34 @@ namespace count_down_test_1
 
         public void refreshProgressBar(double per)
         {
-            per = (this.direction == TimerDirection.Left) ? per : (1 - per);
-            if(per >= 0.75)
+            per = per < 0 ? 0 : per;
+            per = per > 1 ? 1 : per;
+            this.refreshTheme(per);
+
+            ProgressBack.BackColor = this.themeColors.backColor;
+            if(per <= 0.25)
             {
-                if (per >= 1)
+                if (per <= 0)
                 {
-                    ProgressFront.BackColor = Color.Red;
-                    per = 1;
+                    ProgressFront.BackColor = this.themeColors.expireColor;
+                    per = 0;
                 }
                 else
                 {
-                    ProgressFront.BackColor = Color.Yellow;
+                    ProgressFront.BackColor = this.themeColors.warnColar;
                 }
             }
             else
             {
-                ProgressFront.BackColor = Color.Green;
+                ProgressFront.BackColor = this.themeColors.runColor;
             }
 
-            if (per < 0)
+            if (per >= 1)
             {
-                per = 0;
+                per = 1;
             }
+            per = (this.direction == TimerDirection.Left) ? per : (1 - per);
+
             ProgressFront.Width = (int)(ProgressBack.Width * per);
             ProgressFront.Refresh();
             ProgressBack.Refresh();
@@ -380,6 +396,34 @@ namespace count_down_test_1
             return T;
         }
 
+        public void refreshTheme(double per)
+        {
+            switch (this.theme)
+            {
+                case Theme.Default:
+                    this.themeColors.backColor = Color.White;
+                    this.themeColors.runColor = Color.Green;
+                    this.themeColors.warnColar = Color.Yellow;
+                    this.themeColors.expireColor = Color.Red;
+                    break;
+                case Theme.BlackAndWhile:
+                    this.themeColors.backColor = Color.Black;
+                    this.themeColors.runColor = Color.White;
+                    this.themeColors.warnColar = Color.Red;
+                    this.themeColors.expireColor = Color.Black;
+                    break;
+                case Theme.Gay:
+                    System.Random rnd = new Random();
+                    this.themeColors.backColor = Color.FromArgb(rnd.Next(0, 255), rnd.Next(0, 255), rnd.Next(0, 255));
+                    this.themeColors.runColor = Color.FromArgb((int)(255*per), 255, 255);
+                    this.themeColors.warnColar = Color.FromArgb((int)(255*per), 255, 255);
+                    this.themeColors.expireColor = Color.FromArgb((int)(255*per), 255, 255);
+                    break;
+                default:
+                    break;
+            }
+        }
+       
         /*   EMPTY！
          * 
          */
@@ -396,6 +440,46 @@ namespace count_down_test_1
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             this.alarmWords = textBox2.Text;
+        }
+
+        private void autooffToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.alarmOffStyle = AlarmOffStyle.Auto;
+        }
+
+        private void manualToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.alarmOffStyle = AlarmOffStyle.Manual;
+        }
+
+        private void leftToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.direction = TimerDirection.Left;
+        }
+
+        private void rightToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.direction = TimerDirection.Right;
+        }
+
+        private void blackWhiteToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.theme = Theme.BlackAndWhile;
+        }
+
+        private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.theme = Theme.Default;
+        }
+
+        private void gayToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            this.theme = Theme.Gay;
+        }
+
+        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 
