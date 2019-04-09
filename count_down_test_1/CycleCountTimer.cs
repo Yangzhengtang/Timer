@@ -51,6 +51,13 @@ namespace count_down_test_1
 
         //  The update method is just the same as CycleTimer
 
+        public override void reset()
+        {
+            base.reset();
+            this.count = 0;
+            this.onUpdated();
+        }
+
         protected override void onCycleTurnOver()
         {
             base.onCycleTurnOver();

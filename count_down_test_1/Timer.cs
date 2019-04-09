@@ -26,7 +26,6 @@ namespace count_down_test_1
 
         //  Properties
         //  protected string configPath = "./TimerConfig.json";
-
         protected System.DateTime startTime;
         protected System.DateTime endTime;
         protected System.DateTime currentTime;
@@ -193,6 +192,16 @@ namespace count_down_test_1
                 (alarm ? "Yes" : "No"));    
         }
 
+        public virtual void reset()
+        {
+            startTime = System.DateTime.Now;
+            endTime = startTime.Add(originTimeSpan);
+            expire = false;
+            endSig = false;
+            pause = false;
+            this.onUpdated();
+        }
+
         /*  The update will be overridden in other class, 
             so the update event should be done in this seperated method.
             This method is to notify the UI and send the information.
@@ -207,12 +216,6 @@ namespace count_down_test_1
                 args.Pause = this.pause;
                 args.End = this.endSig;
             this.Update(this, args);
-        }
-
-        public void reset()
-        {
-            startTime = System.DateTime.Now;
-            endTime = startTime.Add(originTimeSpan);
         }
 
         //  Activate the timer.
@@ -292,6 +295,7 @@ namespace count_down_test_1
             this.onUpdated();
         }
 
+        //  This class is used to communicate with UI.
         public class UpdateEventArgs : EventArgs
         {
             public System.TimeSpan Diff { get; set; }

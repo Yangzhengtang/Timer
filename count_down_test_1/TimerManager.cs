@@ -70,11 +70,6 @@ namespace count_down_test_1
             }
         }
 
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
         //  Run when the choose unit is closed.
         private void ClosedEventReceiver(object sender, FormClosedEventArgs e)
         {
@@ -97,7 +92,6 @@ namespace count_down_test_1
                 DoAction();
             }
         }
-
 
         //  Receive the event when start a timer in the TimerChooseUnit UI logic.
         private void ChosenReceiver(object sender, TimerChooseUnit.ChosenEventArgs e)
@@ -157,6 +151,12 @@ namespace count_down_test_1
                 this.Dispose();                //释放资源
                 //Application.Exit();            //关闭应用程序窗体
             }
-        } 
+        }
+
+        //  RMPTY!
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
     }
 }

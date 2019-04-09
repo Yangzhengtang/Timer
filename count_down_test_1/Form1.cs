@@ -9,16 +9,18 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
 using static count_down_test_1.TimerOption;
+using System.Runtime.InteropServices;
 
 namespace count_down_test_1
 {
     public partial class Form1 : Form
-    {
+    {   
         private TimerDirection direction; //  Whether the timer grows to left or right
         private Timer timer;    //  The timer contained in this window.
-        private bool old;
+        private bool old;   //  Whether the timer is loaded from dumpfile.
 
         //  The properties sent from choose unit.
+        //  Used to build new timer.
         private ChooseStyle ChooseStyle { get; set; }
         private TimerOption option { get; set; }
         private TimeSpan duration { get; set; }
@@ -59,9 +61,9 @@ namespace count_down_test_1
             this.timer.onUpdated();
         }
 
+        //  register all the receivers of the timer 
         public void register_receivers()
-        {
-            //  register all the receivers of the timer 
+        {           
             timer.Alarm += new Timer.AlarmEventHandler(AlarmReceiver);  
             timer.AfterAlarm += new Timer.AfterAlarmEventHandler(AfterAlarmReceiver);
             timer.End += new Timer.EndHandler(EndReceiver);
@@ -143,7 +145,28 @@ namespace count_down_test_1
             Console.WriteLine("Just Update the timer.");
             Action DoAction = delegate ()
             {
-                
+                this.displayer.Clear();
+
+                switch (this.timer.timerOption)
+                {
+                    case TimerOption.Timing:
+                        this.displayer.AppendText(e.Diff.ToString("g"));
+                        break;
+                    default:
+                        if (e.Expire)
+                        {
+                            this.refreshProgressBar(0);
+                        }
+                        else
+                        {
+                            double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
+                            this.refreshProgressBar(percent);
+                        }
+                        //  this.displayer.AppendText(e.Expire ? "Expired: " : "Left: ");
+                        this.displayer.AppendText(e.Diff.ToString("hh':'mm':'ss'.'fff"));
+                        break;
+                }
+                /*
                 this.textBox1.Clear();
 
                 switch (this.timer.timerOption)
@@ -152,12 +175,19 @@ namespace count_down_test_1
                         this.textBox1.AppendText(e.Diff.ToString("g"));
                         break;
                     default:
-                        double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
+                        if (e.Expire)
+                        {
+                             this.refreshProgressBar(0);
+                        }
+                        else
+                        {
+                            double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
+                            this.refreshProgressBar(percent);
+                        }
                         //  this.textBox1.AppendText(e.Expire ? "Expired: " : "Left: ");
                         this.textBox1.AppendText(e.Diff.ToString("hh'小时'mm'分钟'ss'秒'fff'毫秒'"));
-                        this.refreshProgressBar(percent);
                         break;
-                }              
+                }   */
             };
             if (this.InvokeRequired)
             {
@@ -184,7 +214,7 @@ namespace count_down_test_1
         //  Start the timer, the ENTRANCE
         private void button1_Click(object sender, EventArgs e)
         {
-            if( this.timer != null) //  Reset, to be modified.
+            if( this.timer != null) 
             {
                 Console.WriteLine("Warning! The timer already exists.");
                 //  MessageBox.Show("Warning! The timer already exists.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
@@ -240,15 +270,30 @@ namespace count_down_test_1
         public void refreshProgressBar(double per)
         {
             per = (this.direction == TimerDirection.Left) ? per : (1 - per);
-            if (per > 1)
+            if(per >= 0.75)
             {
-                per = 1;
+                if (per >= 1)
+                {
+                    per = 1;
+                    ModifyProgressBarColor.SetState(this.progressBar1, 2);
+                }
+                else
+                {
+                    ModifyProgressBarColor.SetState(this.progressBar1, 3);
+                }
             }
+            else
+            {
+                ModifyProgressBarColor.SetState(this.progressBar1, 1);
+            }
+            
             if (per < 0)
             {
                 per = 0;
             }
+
             this.progressBar1.Value = Convert.ToInt32(per * 100);
+            // his.progressBar1.Refresh();
         }
 
         //  A packed function to call before a timer is built.
@@ -315,8 +360,14 @@ namespace count_down_test_1
         {
 
         }
+
+        private void displayer_TextChanged(object sender, EventArgs e)
+        {
+
+        }
     }
 
+    //  Kit used to execute cross-thread function.
     //  https://www.cnblogs.com/zhangguihua/p/9989376.html
     static class ControlExtensions
     {
@@ -351,6 +402,18 @@ namespace count_down_test_1
                 return;
             }
             Code.Invoke();
+        }
+    }
+
+    //  ProgressBar beautify.
+    //  https://stackoverflow.com/questions/778678/how-to-change-the-color-of-progressbar-in-c-sharp-net-3-5
+    public static class ModifyProgressBarColor
+    {
+        [DllImport("user32.dll", CharSet = CharSet.Auto, SetLastError = false)]
+        static extern IntPtr SendMessage(IntPtr hWnd, uint Msg, IntPtr w, IntPtr l);
+        public static void SetState(this ProgressBar pBar, int state)
+        {
+            SendMessage(pBar.Handle, 1040, (IntPtr)state, IntPtr.Zero);
         }
     }
 }
