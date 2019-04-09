@@ -50,6 +50,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CycleCountTimer.cs" />
+    <Compile Include="IntervalCycleTimer.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="SoundManager.cs" />
     <Compile Include="CycleTimer.cs" />

@@ -153,7 +153,7 @@ namespace count_down_test_1
             }
         }
 
-        //  RMPTY!
+        //  EMPTY!
         private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
         {
 

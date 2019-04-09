@@ -161,32 +161,24 @@ namespace count_down_test_1
             else // expired
             {
                 diffTimeSpan = currentTime.Subtract(endTime);
-                if(diffTimeSpan.TotalMilliseconds > 100)    //  not alarming
+                if(diffTimeSpan.TotalMilliseconds > 3000)    //  not alarming
                 {
-                    onAfterAlarm();
+                    if (this.alarm)
+                    {
+                        this.alarm = false;
+                        onAfterAlarm();
+                    }
                 }
+                
+
             }
 
             // Send the update event.
-            /*
-            Console.WriteLine("why");
-            UpdateEventArgs args = new UpdateEventArgs();
-                args.Diff = this.diffTimeSpan;
-                args.Orig = this.originTimeSpan;
-                args.Expire = this.expire;
-                args.Alarm = this.alarm;
-                args.Pause = this.pause;
-                args.End = this.endSig;
-            Console.WriteLine("\n\n\n\n\n");
-            this.Update(this, args);
-            Console.WriteLine("Wow");   */
-
             if (this.pause == false)    //  There is a bug in the onUpdate thread... 
             {
                 this.onUpdated();
             }
-            
-            
+
             Console.WriteLine("{0} - {1} = {2}, Alarm: {3}", 
                 endTime, currentTime, diffTimeSpan.ToString(),
                 (alarm ? "Yes" : "No"));    

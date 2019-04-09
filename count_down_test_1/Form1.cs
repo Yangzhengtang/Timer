@@ -18,6 +18,7 @@ namespace count_down_test_1
         private TimerDirection direction; //  Whether the timer grows to left or right
         private Timer timer;    //  The timer contained in this window.
         private bool old;   //  Whether the timer is loaded from dumpfile.
+        private AlarmRise alarmRise;
 
         //  The properties sent from choose unit.
         //  Used to build new timer.
@@ -78,8 +79,8 @@ namespace count_down_test_1
                 textBox1.Clear();
                 textBox1.AppendText("Alarming!");
                 TopMost = true;  //Window jump to the top when alarming.
-                AlarmRise alarmRise = new AlarmRise();
-                alarmRise.Show();
+                this.alarmRise = new AlarmRise();
+                this.alarmRise.Show();
                 //System.Threading.Thread.Sleep(10);
                 //textBox1.Clear();
             };
@@ -101,6 +102,15 @@ namespace count_down_test_1
             Console.WriteLine("Just after alarm.");
             Action DoAction = delegate ()
             {
+                if(this.alarmRise != null)
+                {
+                    this.alarmRise.Close();
+                    //Thread t = new Thread(new ThreadStart(this.alarmRise.Close_in_5_secs));
+                }
+                else
+                {
+                    Console.WriteLine("WTF!");
+                }
                 textBox1.Clear();
             };
 
@@ -150,7 +160,7 @@ namespace count_down_test_1
                 switch (this.timer.timerOption)
                 {
                     case TimerOption.Timing:
-                        this.displayer.AppendText(e.Diff.ToString("g"));
+                        this.displayer.AppendText(e.Diff.ToString("hh':'mm':'ss'.'fff"));
                         break;
                     default:
                         if (e.Expire)
@@ -274,26 +284,26 @@ namespace count_down_test_1
             {
                 if (per >= 1)
                 {
+                    this.progressBar1.SetState(2);
                     per = 1;
-                    ModifyProgressBarColor.SetState(this.progressBar1, 2);
                 }
                 else
                 {
-                    ModifyProgressBarColor.SetState(this.progressBar1, 3);
+                    this.progressBar1.SetState(3);
                 }
             }
             else
             {
-                ModifyProgressBarColor.SetState(this.progressBar1, 1);
+                this.progressBar1.SetState(1);
             }
-            
+
             if (per < 0)
             {
                 per = 0;
             }
 
             this.progressBar1.Value = Convert.ToInt32(per * 100);
-            // his.progressBar1.Refresh();
+            this.progressBar1.Refresh();
         }
 
         //  A packed function to call before a timer is built.
