@@ -40,6 +40,9 @@
             this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
             this.bellToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.beepingToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.beepToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.bibiToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.joyToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.toolStripSeparator1 = new System.Windows.Forms.ToolStripSeparator();
             this.autooffToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.manualToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
@@ -131,6 +134,7 @@
             this.directionToolStripMenuItem});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(181, 92);
+            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // bellToolStripMenuItem
             // 
@@ -145,26 +149,51 @@
             // 
             // beepingToolStripMenuItem
             // 
+            this.beepingToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.beepToolStripMenuItem,
+            this.bibiToolStripMenuItem,
+            this.joyToolStripMenuItem});
             this.beepingToolStripMenuItem.Name = "beepingToolStripMenuItem";
-            this.beepingToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.beepingToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.beepingToolStripMenuItem.Text = "beeping";
+            // 
+            // beepToolStripMenuItem
+            // 
+            this.beepToolStripMenuItem.Name = "beepToolStripMenuItem";
+            this.beepToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.beepToolStripMenuItem.Text = "beep";
+            this.beepToolStripMenuItem.Click += new System.EventHandler(this.beepToolStripMenuItem_Click);
+            // 
+            // bibiToolStripMenuItem
+            // 
+            this.bibiToolStripMenuItem.Name = "bibiToolStripMenuItem";
+            this.bibiToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.bibiToolStripMenuItem.Text = "didi";
+            this.bibiToolStripMenuItem.Click += new System.EventHandler(this.didiToolStripMenuItem_Click);
+            // 
+            // joyToolStripMenuItem
+            // 
+            this.joyToolStripMenuItem.Name = "joyToolStripMenuItem";
+            this.joyToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.joyToolStripMenuItem.Text = "joy";
+            this.joyToolStripMenuItem.Click += new System.EventHandler(this.joyToolStripMenuItem_Click);
             // 
             // toolStripSeparator1
             // 
             this.toolStripSeparator1.Name = "toolStripSeparator1";
-            this.toolStripSeparator1.Size = new System.Drawing.Size(117, 6);
+            this.toolStripSeparator1.Size = new System.Drawing.Size(177, 6);
             // 
             // autooffToolStripMenuItem
             // 
             this.autooffToolStripMenuItem.Name = "autooffToolStripMenuItem";
-            this.autooffToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.autooffToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.autooffToolStripMenuItem.Text = "Auto-off";
             this.autooffToolStripMenuItem.Click += new System.EventHandler(this.autooffToolStripMenuItem_Click);
             // 
             // manualToolStripMenuItem
             // 
             this.manualToolStripMenuItem.Name = "manualToolStripMenuItem";
-            this.manualToolStripMenuItem.Size = new System.Drawing.Size(120, 22);
+            this.manualToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
             this.manualToolStripMenuItem.Text = "Manual";
             this.manualToolStripMenuItem.Click += new System.EventHandler(this.manualToolStripMenuItem_Click);
             // 
@@ -182,21 +211,21 @@
             // defaultToolStripMenuItem
             // 
             this.defaultToolStripMenuItem.Name = "defaultToolStripMenuItem";
-            this.defaultToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.defaultToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.defaultToolStripMenuItem.Text = "Default";
             this.defaultToolStripMenuItem.Click += new System.EventHandler(this.defaultToolStripMenuItem_Click);
             // 
             // blackWhiteToolStripMenuItem
             // 
             this.blackWhiteToolStripMenuItem.Name = "blackWhiteToolStripMenuItem";
-            this.blackWhiteToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.blackWhiteToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.blackWhiteToolStripMenuItem.Text = "Black And White";
             this.blackWhiteToolStripMenuItem.Click += new System.EventHandler(this.blackWhiteToolStripMenuItem_Click);
             // 
             // gayToolStripMenuItem
             // 
             this.gayToolStripMenuItem.Name = "gayToolStripMenuItem";
-            this.gayToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.gayToolStripMenuItem.Size = new System.Drawing.Size(171, 22);
             this.gayToolStripMenuItem.Text = "Gay";
             this.gayToolStripMenuItem.Click += new System.EventHandler(this.gayToolStripMenuItem_Click);
             // 
@@ -212,14 +241,14 @@
             // leftToolStripMenuItem
             // 
             this.leftToolStripMenuItem.Name = "leftToolStripMenuItem";
-            this.leftToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
+            this.leftToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
             this.leftToolStripMenuItem.Text = "Left";
             this.leftToolStripMenuItem.Click += new System.EventHandler(this.leftToolStripMenuItem_Click);
             // 
             // rightToolStripMenuItem
             // 
             this.rightToolStripMenuItem.Name = "rightToolStripMenuItem";
-            this.rightToolStripMenuItem.Size = new System.Drawing.Size(102, 22);
+            this.rightToolStripMenuItem.Size = new System.Drawing.Size(106, 22);
             this.rightToolStripMenuItem.Text = "Right";
             this.rightToolStripMenuItem.Click += new System.EventHandler(this.rightToolStripMenuItem_Click);
             // 
@@ -267,6 +296,9 @@
         private System.Windows.Forms.ToolStripMenuItem defaultToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem blackWhiteToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem gayToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem beepToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem bibiToolStripMenuItem;
+        private System.Windows.Forms.ToolStripMenuItem joyToolStripMenuItem;
     }
 }
 

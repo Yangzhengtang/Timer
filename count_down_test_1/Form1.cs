@@ -23,6 +23,8 @@ namespace count_down_test_1
         private AlarmOffStyle alarmOffStyle = AlarmOffStyle.Auto;
         private Theme theme = Theme.Default;
         private ThemeColors themeColors;
+        private SoundConfigure soundconfigure=new SoundConfigure(); //control the alarm 
+        private int SoundPointer = 0;
 
         //  The properties sent from choose unit.
         //  Used to build new timer.
@@ -43,6 +45,9 @@ namespace count_down_test_1
             this.refreshProgressBar(1); //  For User Experience
             this.displayer.AppendText("00:00:00.000");
             this.button1.Text = "Start";
+            this.soundconfigure.load();
+
+
         }
 
         //  Create a niew one, overload.
@@ -61,6 +66,7 @@ namespace count_down_test_1
             this.refreshProgressBar(1); //  For User Experience
             this.displayer.AppendText(OriginTimeSpan.ToString("hh':'mm':'ss'.'fff"));
             this.button1.Text = "Start";
+            this.soundconfigure.load();
         }
 
         //  Load an old one.
@@ -75,6 +81,7 @@ namespace count_down_test_1
             this.timer.onUpdated();
             this.button1.Text = "Reset";
             this.button2.Text = "Resume";
+            this.soundconfigure.load();
         }
 
         //  register all the receivers of the timer 
@@ -95,7 +102,8 @@ namespace count_down_test_1
                 textBox1.AppendText("Alarming!");
                 this.TopMost = true;  //Window jump to the top when alarming.
                 this.Show();
-                this.alarmRise = new AlarmRise(this.alarmWords);
+                //this.alarmRise = new AlarmRise(this.alarmWords);
+                this.alarmRise = new AlarmRise(this.SoundPointer);
                 this.alarmRise.Show();
                 //System.Threading.Thread.Sleep(10);
                 //textBox1.Clear();
@@ -477,10 +485,47 @@ namespace count_down_test_1
             this.theme = Theme.Gay;
         }
 
+
         private void colorToolStripMenuItem_Click(object sender, EventArgs e)
         {
 
         }
+
+        private void beepToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+          //  this.soundconfigure.load();
+          //  this.soundconfigure.init();
+          //  this.soundconfigure.dump();
+          // this.soundconfigure.load();
+            this.soundconfigure.ChangePointer(0);
+            this.SoundPointer = 0;
+            this.soundconfigure.dump();
+            Console.WriteLine(soundconfigure.DefaultSoundPath);
+        }
+
+        private void didiToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+           // this.soundconfigure.load();
+            this.soundconfigure.ChangePointer(1);
+            this.soundconfigure.dump();
+            this.SoundPointer = 1;
+            Console.WriteLine(soundconfigure.DefaultSoundPath);
+        }
+
+        private void joyToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+          //  this.soundconfigure.load();
+            this.soundconfigure.ChangePointer(2);
+            this.soundconfigure.dump();
+            this.SoundPointer = 2;
+            Console.WriteLine(soundconfigure.DefaultSoundPath);
+        }
+
+        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
+        {
+
+        }
+
     }
 
     //  Kit used to execute cross-thread function.

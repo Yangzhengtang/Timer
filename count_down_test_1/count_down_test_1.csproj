@@ -52,7 +52,6 @@
     <Compile Include="CycleCountTimer.cs" />
     <Compile Include="IntervalCycleTimer.cs" />
     <Compile Include="Sound.cs" />
-    <Compile Include="SoundManager.cs" />
     <Compile Include="CycleTimer.cs" />
     <Compile Include="AlarmRise.cs">
       <SubType>Form</SubType>
@@ -61,6 +60,7 @@
       <DependentUpon>AlarmRise.cs</DependentUpon>
     </Compile>
     <Compile Include="includes.cs" />
+    <Compile Include="SoundConfigure.cs" />
     <Compile Include="Timer.cs" />
     <Compile Include="Form1.cs">
       <SubType>Form</SubType>

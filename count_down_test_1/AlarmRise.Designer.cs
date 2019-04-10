@@ -68,6 +68,7 @@
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "Wow!";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.AlarmRise_FormClosing);
+            this.Shown += new System.EventHandler(this.AlarmRise_Shown);
             this.ResumeLayout(false);
             this.PerformLayout();
 
