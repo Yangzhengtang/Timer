@@ -75,6 +75,10 @@ namespace count_down_test_1
                 return;
             }
             this.duration = this.tempDateTime_1.Subtract(this.tempDateTime_0);
+            if (this.option == TimerOption.Timing)
+            {
+                this.duration = new System.TimeSpan(0);
+            }
             this.OnChosen();
         }
 

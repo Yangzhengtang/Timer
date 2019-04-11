@@ -50,7 +50,8 @@
             "Normal",
             "Cycle",
             "Timing",
-            "CycleCount"});
+            "CycleCount",
+            "Interval"});
             this.comboBox1.Location = new System.Drawing.Point(243, 43);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(87, 26);
