@@ -53,28 +53,28 @@
     <Compile Include="IntervalCycleTimer.cs" />
     <Compile Include="Sound.cs" />
     <Compile Include="CycleTimer.cs" />
-    <Compile Include="AlarmRise.cs">
+    <Compile Include="AlarmRiseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="AlarmRise.Designer.cs">
-      <DependentUpon>AlarmRise.cs</DependentUpon>
+    <Compile Include="AlarmRiseForm.Designer.cs">
+      <DependentUpon>AlarmRiseForm.cs</DependentUpon>
     </Compile>
     <Compile Include="includes.cs" />
     <Compile Include="SoundConfigure.cs" />
     <Compile Include="Timer.cs" />
-    <Compile Include="Form1.cs">
+    <Compile Include="TimerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Form1.Designer.cs">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <Compile Include="TimerForm.Designer.cs">
+      <DependentUpon>TimerForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TimerChooseUnit.cs">
+    <Compile Include="TimerChooseForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="TimerChooseUnit.Designer.cs">
-      <DependentUpon>TimerChooseUnit.cs</DependentUpon>
+    <Compile Include="TimerChooseForm.Designer.cs">
+      <DependentUpon>TimerChooseForm.cs</DependentUpon>
     </Compile>
     <Compile Include="TimerConfigure.cs" />
     <Compile Include="TimerManager.cs">
@@ -84,11 +84,11 @@
       <DependentUpon>TimerManager.cs</DependentUpon>
     </Compile>
     <Compile Include="TimingTimer.cs" />
-    <EmbeddedResource Include="Form1.resx">
-      <DependentUpon>Form1.cs</DependentUpon>
+    <EmbeddedResource Include="TimerForm.resx">
+      <DependentUpon>TimerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="AlarmRise.resx">
-      <DependentUpon>AlarmRise.cs</DependentUpon>
+    <EmbeddedResource Include="AlarmRiseForm.resx">
+      <DependentUpon>AlarmRiseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -99,8 +99,8 @@
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="TimerChooseUnit.resx">
-      <DependentUpon>TimerChooseUnit.cs</DependentUpon>
+    <EmbeddedResource Include="TimerChooseForm.resx">
+      <DependentUpon>TimerChooseForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="TimerManager.resx">
       <DependentUpon>TimerManager.cs</DependentUpon>

@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 using System.Runtime.InteropServices;
 
-namespace count_down_test_1
+namespace MultiTimer
 {
     public class Sound
     {

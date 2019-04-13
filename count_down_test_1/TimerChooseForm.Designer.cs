@@ -1,6 +1,6 @@
-﻿namespace count_down_test_1
+﻿namespace MultiTimer
 {
-    partial class TimerChooseUnit
+    partial class TimerChooseForm
     {
         /// <summary>
         /// Required designer variable.
@@ -28,7 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
-            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TimerChooseUnit));
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(TimerChooseForm));
             this.comboBox1 = new System.Windows.Forms.ComboBox();
             this.HourBox = new System.Windows.Forms.TextBox();
             this.MinBox = new System.Windows.Forms.TextBox();
@@ -66,7 +66,6 @@
             this.HourBox.Size = new System.Drawing.Size(48, 26);
             this.HourBox.TabIndex = 1;
             this.HourBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.HourBox.TextChanged += new System.EventHandler(this.HourBox_TextChanged);
             // 
             // MinBox
             // 
@@ -76,7 +75,6 @@
             this.MinBox.Size = new System.Drawing.Size(48, 26);
             this.MinBox.TabIndex = 3;
             this.MinBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.MinBox.TextChanged += new System.EventHandler(this.MinBox_TextChanged);
             // 
             // SecBox
             // 
@@ -86,7 +84,6 @@
             this.SecBox.Size = new System.Drawing.Size(50, 26);
             this.SecBox.TabIndex = 4;
             this.SecBox.TextAlign = System.Windows.Forms.HorizontalAlignment.Center;
-            this.SecBox.TextChanged += new System.EventHandler(this.SecBox_TextChanged);
             // 
             // label1
             // 
@@ -148,7 +145,6 @@
             this.label4.Size = new System.Drawing.Size(101, 18);
             this.label4.TabIndex = 11;
             this.label4.Text = "Limit/Interval:";
-            this.label4.Click += new System.EventHandler(this.label4_Click);
             // 
             // label5
             // 
@@ -161,9 +157,8 @@
             this.label5.TabIndex = 12;
             this.label5.Text = "Type:";
             this.label5.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
-            this.label5.Click += new System.EventHandler(this.label5_Click);
             // 
-            // TimerChooseUnit
+            // TimerChooseForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 12F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -180,10 +175,9 @@
             this.Controls.Add(this.label1);
             this.Controls.Add(this.comboBox1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
-            this.Name = "TimerChooseUnit";
+            this.Name = "TimerChooseForm";
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
-            this.Text = "TimerChooseUnit";
-            this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.TimerChooseUnit_FormClosed);
+            this.Text = "TimerChooseForm";
             this.Load += new System.EventHandler(this.TimerChooseUnit_Load);
             this.ResumeLayout(false);
             this.PerformLayout();

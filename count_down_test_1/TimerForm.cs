@@ -8,17 +8,17 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.Threading;
-using static count_down_test_1.TimerOption;
+using static MultiTimer.TimerOption;
 using System.Runtime.InteropServices;
 
-namespace count_down_test_1
+namespace MultiTimer
 {
-    public partial class Form1 : Form
+    public partial class TimerForm : Form
     {   
         private TimerDirection direction; //  Whether the timer grows to left or right
         private Timer timer;    //  The timer contained in this window.
         private bool old;   //  Whether the timer is loaded from dumpfile.
-        private AlarmRise alarmRise;
+        private AlarmRiseForm alarmRise;
         private string alarmWords;
         private AlarmOffStyle alarmOffStyle = AlarmOffStyle.Auto;
         private Theme theme = Theme.Default;
@@ -35,7 +35,7 @@ namespace count_down_test_1
         private int count_limit { get; set; }
 
         //  Create a new one. Default constructor.
-        public Form1()
+        public TimerForm()
         {
             this.themeColors = new ThemeColors();
             InitializeComponent();
@@ -51,7 +51,7 @@ namespace count_down_test_1
         }
 
         //  Create a niew one, overload.
-        public Form1(System.TimeSpan OriginTimeSpan, TimerOption timeroption, int CountLimit)
+        public TimerForm(System.TimeSpan OriginTimeSpan, TimerOption timeroption, int CountLimit)
         {
             this.themeColors = new ThemeColors();
             InitializeComponent();
@@ -70,7 +70,7 @@ namespace count_down_test_1
         }
 
         //  Load an old one.
-        public Form1(string path)
+        public TimerForm(string path)
         {
             this.themeColors = new ThemeColors();
             InitializeComponent();
@@ -102,8 +102,8 @@ namespace count_down_test_1
                 textBox1.AppendText("Alarming!");
                 this.TopMost = true;  //Window jump to the top when alarming.
                 this.Show();
-                //this.alarmRise = new AlarmRise(this.alarmWords);
-                this.alarmRise = new AlarmRise(this.SoundPointer);
+                //this.alarmRise = new AlarmRiseForm(this.alarmWords);
+                this.alarmRise = new AlarmRiseForm(this.SoundPointer);
                 this.alarmRise.Show();
                 //System.Threading.Thread.Sleep(10);
                 //textBox1.Clear();
@@ -202,28 +202,6 @@ namespace count_down_test_1
                         this.displayer.AppendText(e.Diff.ToString("hh':'mm':'ss'.'fff"));
                         break;
                 }
-                /*
-                this.textBox1.Clear();
-
-                switch (this.timer.timerOption)
-                {
-                    case TimerOption.Timing:
-                        this.textBox1.AppendText(e.Diff.ToString("g"));
-                        break;
-                    default:
-                        if (e.Expire)
-                        {
-                             this.refreshProgressBar(0);
-                        }
-                        else
-                        {
-                            double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
-                            this.refreshProgressBar(percent);
-                        }
-                        //  this.textBox1.AppendText(e.Expire ? "Expired: " : "Left: ");
-                        this.textBox1.AppendText(e.Diff.ToString("hh'小时'mm'分钟'ss'秒'fff'毫秒'"));
-                        break;
-                }   */
             };
             if (this.InvokeRequired)
             {
@@ -431,19 +409,6 @@ namespace count_down_test_1
                     break;
             }
         }
-       
-        /*   EMPTY！
-         * 
-         */
-        private void textBox1_TextChanged(object sender, EventArgs e)
-        {
-
-        }
-
-        private void displayer_TextChanged(object sender, EventArgs e)
-        {
-
-        }
 
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
@@ -485,12 +450,6 @@ namespace count_down_test_1
             this.theme = Theme.Gay;
         }
 
-
-        private void colorToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-
-        }
-
         private void beepToolStripMenuItem_Click(object sender, EventArgs e)
         {
           //  this.soundconfigure.load();
@@ -520,12 +479,6 @@ namespace count_down_test_1
             this.SoundPointer = 2;
             Console.WriteLine(soundconfigure.DefaultSoundPath);
         }
-
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
-        }
-
     }
 
     //  Kit used to execute cross-thread function.

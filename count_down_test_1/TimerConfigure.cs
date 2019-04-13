@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using Newtonsoft.Json;
 using System.IO;
 
-namespace count_down_test_1
+namespace MultiTimer
 {
     class TimerConfigure
     {

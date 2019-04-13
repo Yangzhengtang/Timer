@@ -5,7 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.IO;
 
-namespace count_down_test_1
+namespace MultiTimer
 {
     class CycleCountTimer: CycleTimer
     {

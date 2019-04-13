@@ -8,28 +8,32 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace count_down_test_1
+namespace MultiTimer
 {
-    public partial class TimerChooseUnit : Form
+    public partial class TimerChooseForm : Form
     {
         private TimerOption option;
-        private int Cycle_limit;    //  The property of the Cycle count timer.
-        private TimeSpan duration;
-        private DateTime targetTime;
-        private DateTime tempDateTime_0;  //  A var to calculate the duration.
-        private DateTime tempDateTime_1;  //  A var to calculate the duration.
-        private ChooseStyle chooseStyle;    //  The different choose style.
+        private int Cycle_limit;            //  The property of the Cycle count timer.
+        private TimeSpan duration;          //  The timer duration
+        private DateTime targetTime;        //  TO DO: build a timer from the target time given by user.
+        private DateTime tempDateTime_0;    //  A temp var to calculate the duration.
+        private DateTime tempDateTime_1;    //  A temp var to calculate the duration.
+        private ChooseStyle chooseStyle;    //  The different choose style( Target time or Duration).
         public delegate void ChosenEventHandler(object sender, ChosenEventArgs e);
         public event ChosenEventHandler Chosen;
 
-        public TimerChooseUnit()
+        public TimerChooseForm()
         {
             InitializeComponent();
             this.duration = DateTime.Now.Subtract(DateTime.Now);    //  Clear the duration
             this.tempDateTime_0 = DateTime.Now;   //  Give an initial temp time.
-            this.tempDateTime_1 = this.tempDateTime_0;
         }
 
+        /// <summary>
+        /// Default timer is initalized to show 00:03:00
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void TimerChooseUnit_Load(object sender, EventArgs e)
         {
             this.HourBox.Text = "0";
@@ -42,26 +46,17 @@ namespace count_down_test_1
             this.option = (TimerOption)(comboBox1.SelectedIndex + 1);
         }
 
-        private void HourBox_TextChanged(object sender, EventArgs e)
-        {
-            //this.tempDateTime.AddHours(Convert.ToInt32(HourBox.Text));            
-        }
-
-        private void MinBox_TextChanged(object sender, EventArgs e)
-        {
-            //this.tempDateTime.AddMinutes(Convert.ToInt32(MinBox.Text));
-        }
-
-        private void SecBox_TextChanged(object sender, EventArgs e)
-        {
-            //this.tempDateTime.AddSeconds(Convert.ToInt32(SecBox.Text));
-        }
-
+        /// <summary>
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void button2_Click(object sender, EventArgs e)
         {
-            this.chooseStyle = ChooseStyle.TimeSpan;
+            this.chooseStyle = ChooseStyle.TimeSpan;   
             try
             {
+                this.tempDateTime_1 = this.tempDateTime_0;
                 this.tempDateTime_1 = this.tempDateTime_1.AddHours(Convert.ToDouble(HourBox.Text));
                 this.tempDateTime_1 = this.tempDateTime_1.AddMinutes(Convert.ToDouble(MinBox.Text));
                 this.tempDateTime_1 = this.tempDateTime_1.AddSeconds(Convert.ToDouble(SecBox.Text));
@@ -100,21 +95,6 @@ namespace count_down_test_1
             public TimerOption option { get; set; }
             public TimeSpan duration { get; set; }
             public DateTime targetTime { get; set; }
-        }
-
-        private void label4_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void label5_Click(object sender, EventArgs e)
-        {
-
-        }
-
-        private void TimerChooseUnit_FormClosed(object sender, FormClosedEventArgs e)
-        {
-
         }
     }
 }

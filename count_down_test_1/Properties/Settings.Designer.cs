@@ -8,7 +8,7 @@
 // </auto-generated>
 //------------------------------------------------------------------------------
 
-namespace count_down_test_1.Properties
+namespace MultiTimer.Properties
 {
 
 

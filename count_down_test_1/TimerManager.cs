@@ -9,7 +9,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using System.IO;
 
-namespace count_down_test_1
+namespace MultiTimer
 {
     public partial class TimerManager : Form
     {
@@ -18,11 +18,11 @@ namespace count_down_test_1
             InitializeComponent();
         }
 
-        private TimerChooseUnit TCU;
+        private TimerChooseForm TCU;
         private List<Timer> TimerList;
         private List<string> ConfigurePathList;
         private int index;
-        private static string SettingPath;
+        //  private static string SettingPath;
         //  private TimerManagerSetting setting;
 
         //  Initialize here.
@@ -53,9 +53,9 @@ namespace count_down_test_1
             }
             else    //  Otherwise, start a new choose unit.
             {
-                this.TCU = new TimerChooseUnit();
+                this.TCU = new TimerChooseForm();
                 this.TCU.Show();
-                this.TCU.Chosen += new TimerChooseUnit.ChosenEventHandler(ChosenReceiver);
+                this.TCU.Chosen += new TimerChooseForm.ChosenEventHandler(ChosenReceiver);
                 this.TCU.FormClosed += new FormClosedEventHandler(ClosedEventReceiver);
             }
         }
@@ -65,7 +65,7 @@ namespace count_down_test_1
         {
             foreach(string configpath in ConfigurePathList)
             {
-                Form1 f = new Form1(configpath);
+                TimerForm f = new TimerForm(configpath);
                 f.Show();
             }
         }
@@ -93,13 +93,13 @@ namespace count_down_test_1
             }
         }
 
-        //  Receive the event when start a timer in the TimerChooseUnit UI logic.
-        private void ChosenReceiver(object sender, TimerChooseUnit.ChosenEventArgs e)
+        //  Receive the event when start a timer in the TimerChooseForm UI logic.
+        private void ChosenReceiver(object sender, TimerChooseForm.ChosenEventArgs e)
         {
             Console.WriteLine("Just Selected and started the timer.");
             Action DoAction = delegate ()
             {
-                Form1 f = new Form1(e.duration, e.option, e.cycle_limit);
+                TimerForm f = new TimerForm(e.duration, e.option, e.cycle_limit);
                 f.Show();
                 this.TCU.Close();
             };
@@ -151,12 +151,6 @@ namespace count_down_test_1
                 this.Dispose();                //释放资源
                 //Application.Exit();            //关闭应用程序窗体
             }
-        }
-
-        //  EMPTY!
-        private void contextMenuStrip1_Opening(object sender, CancelEventArgs e)
-        {
-
         }
     }
 }

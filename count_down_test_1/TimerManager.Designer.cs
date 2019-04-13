@@ -1,4 +1,4 @@
-﻿namespace count_down_test_1
+﻿namespace MultiTimer
 {
     partial class TimerManager
     {
@@ -80,7 +80,6 @@
             this.toolStripMenuItem3});
             this.contextMenuStrip1.Name = "contextMenuStrip1";
             this.contextMenuStrip1.Size = new System.Drawing.Size(101, 76);
-            this.contextMenuStrip1.Opening += new System.ComponentModel.CancelEventHandler(this.contextMenuStrip1_Opening);
             // 
             // toolStripMenuItem1
             // 

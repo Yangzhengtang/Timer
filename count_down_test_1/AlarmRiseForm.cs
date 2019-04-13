@@ -8,21 +8,21 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace count_down_test_1
+namespace MultiTimer
 {
-    public partial class AlarmRise : Form
+    public partial class AlarmRiseForm : Form
     {
         private Sound sound = new Sound();
         // to be replaced by SoundManager
         SoundConfigure soundconfigure = new SoundConfigure();
 
-        public AlarmRise(string showWords="Time is up!")
+        public AlarmRiseForm(string showWords="Time is up!")
         {
             InitializeComponent();
             //this.label1.Text = showWords;
             TopMost = true;
         }
-        public AlarmRise(int SoundPointer)
+        public AlarmRiseForm(int SoundPointer)
         {
             InitializeComponent();
             soundconfigure.load();

@@ -4,7 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 
-namespace count_down_test_1
+namespace MultiTimer
 {
     static class Program
     {
