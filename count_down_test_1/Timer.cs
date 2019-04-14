@@ -276,7 +276,7 @@ namespace MultiTimer
                         break;
                     case TimerOption.Timing:
                         this.startTime = startTime.Add(pauseDuration);  //  Defer the start time.
-                        Console.WriteLine("Resumed, the starttime wasreset.");
+                        Console.WriteLine("Resumed, the starttime wasnreset.");
                         break;
                     default:
                         break;

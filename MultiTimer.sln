@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.28307.271
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "count_down_test_1", "count_down_test_1\count_down_test_1.csproj", "{6BFA67CC-8274-4C88-BB35-1904535B0943}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MultiTimer", "count_down_test_1\MultiTimer.csproj", "{6BFA67CC-8274-4C88-BB35-1904535B0943}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
