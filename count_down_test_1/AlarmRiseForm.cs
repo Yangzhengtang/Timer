@@ -12,30 +12,27 @@ namespace MultiTimer
 {
     public partial class AlarmRiseForm : Form
     {
-        private Sound sound = new Sound();
-        // to be replaced by SoundManager
-        SoundConfigure soundconfigure = new SoundConfigure();
+        private Sound sound = new Sound();  //Use sound to get the path of a certain musci and play/stop/close it
+        SoundConfigure soundconfigure = new SoundConfigure();//Manager the list of sound path and the default sound path
 
         public AlarmRiseForm(string showWords="Time is up!")
         {
             InitializeComponent();
-            //this.label1.Text = showWords;
             TopMost = true;
         }
         public AlarmRiseForm(int SoundPointer)
         {
             InitializeComponent();
-            soundconfigure.load();
-            soundconfigure.ChangePointer(SoundPointer);
-            //this.label1.Text = showWords;
-            TopMost = true;
+            soundconfigure.load(); //load the configure from ....json
+            soundconfigure.ChangePointer(SoundPointer); //SoundPointer is passed from TimerFrom's ContextMenuStrip1
+            TopMost = true;//hope to save the SoundPointer in .json when chosen in the ContextMenuStrip1 in the future
         }
 
         private void button1_Click(object sender, EventArgs e)
         {
             this.sound.mciStop();
-            this.sound.mciClose();
-            Close();//close the form
+            this.sound.mciClose();//stop and close the music. If not closed, the path of music can't change, and you will play this music forever. 
+            Close();//close the form  
         }
 
         private void AlarmRise_FormClosing(object sender, FormClosingEventArgs e)
@@ -47,11 +44,10 @@ namespace MultiTimer
         private void AlarmRise_Shown(object sender, System.EventArgs e)
         {
             TopMost = true;
-            Application.DoEvents();
-            //SoundConfigure soundconfigure = new SoundConfigure();
-            this.sound.ChangePath(soundconfigure.SoundPathList[soundconfigure.DefaultSoundPointer]);
+            Application.DoEvents(); //to avoid block the main thread
+            this.sound.ChangePath(soundconfigure.SoundPathList[soundconfigure.DefaultSoundPointer]); //set path of sound
             Console.WriteLine(soundconfigure.SoundPathList[soundconfigure.DefaultSoundPointer]);
-            this.sound.mciPlay();
+            this.sound.mciPlay();//play music
             //System.Threading.Thread.Sleep(1000);
             //this.sound.mciStop();
             //this.sound.mciClose();
@@ -64,7 +60,7 @@ namespace MultiTimer
             //Console.WriteLine(soundConfigure.DefaultSoundPath);
             //Console.WriteLine(sound.SoundPath);
             //sound.mciPlay(sound.SoundPath);
-            for (; ; )
+            for (; ; )   //shake the window
             {
                 int shake = 5;
                 int sleep_time = 15;

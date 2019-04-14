@@ -104,7 +104,7 @@ namespace MultiTimer
                 this.TopMost = true;  //Window jump to the top when alarming.
                 this.Show();
                 //this.alarmRise = new AlarmRiseForm(this.alarmWords);
-                this.alarmRise = new AlarmRiseForm(this.SoundPointer);
+                this.alarmRise = new AlarmRiseForm(this.SoundPointer);//hope to save the SoundPointer in .json when chosen in the ContextMenuStrip1 in the future
                 this.alarmRise.Show();
                 //System.Threading.Thread.Sleep(10);
                 //textBox1.Clear();
