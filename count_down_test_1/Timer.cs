@@ -189,6 +189,8 @@ namespace MultiTimer
             expire = false;
             endSig = false;
             pause = false;
+            pauseTime = System.DateTime.Now;
+            diffTimeSpan = originTimeSpan;
             this.onUpdated();
         }
 

@@ -15,24 +15,27 @@ namespace MultiTimer
 {
     public partial class TimerForm : Form
     {   
-        private TimerDirection direction; //  Whether the timer grows to left or right
-        private Timer timer;    //  The timer contained in this window.
-        private bool old;   //  Whether the timer is loaded from dumpfile.
-        private AlarmRiseForm alarmRise;
-        private string alarmWords;
-        private AlarmOffStyle alarmOffStyle = AlarmOffStyle.Auto;
-        private Theme theme = Theme.Default;
-        private ThemeColors themeColors;
-        private SoundConfigure soundconfigure=new SoundConfigure(); //control the alarm 
-        private int SoundPointer = 0;
+        //  UI Properties
+        private TimerDirection direction;       //  Whether the timer grows to left or right
+        private bool old;                       //  Whether the timer is loaded from dumpfile and run.
+        private string alarmWords;              //  The words to show when alarming.
+        private ThemeColors themeColors;        //  The color sets of the UI, which is controlled by theme.
+        private Theme theme = Theme.Default;    //  The theme of the UI, controls the themeColor.
 
-        //  The properties sent from choose unit.
-        //  Used to build new timer.
+        //  Alarm form properties
+        private AlarmOffStyle alarmOffStyle = AlarmOffStyle.Auto;       //  The style of closing the alarm form.
+        private SoundConfigure soundconfigure=new SoundConfigure();     //  control the alarm 
+        private int SoundPointer = 0;                                   //  Used to decide the sound file
+        private AlarmRiseForm alarmRise;
+
+        //  The properties sent from Timer choose form, used to build new timer.
         private ChooseStyle ChooseStyle { get; set; }
         private TimerOption option { get; set; }
         private TimeSpan duration { get; set; }
         private DateTime targetTime { get; set; }
         private int count_limit { get; set; }
+
+        private Timer timer;                //  The timer contained in this window.
 
         //  Create a new one. Default constructor.
         public TimerForm()
@@ -46,8 +49,6 @@ namespace MultiTimer
             this.displayer.AppendText("00:00:00.000");
             this.button1.Text = "Start";
             this.soundconfigure.load();
-
-
         }
 
         //  Create a niew one, overload.
@@ -225,39 +226,54 @@ namespace MultiTimer
             }
         }
 
-        //  Start the timer, the ENTRANCE
+        //  Start
         private void button1_Click(object sender, EventArgs e)
         {
-            if( this.timer != null) 
+            if( this.timer != null)     //  The "Reset" button is pressed.
             {
-                Console.WriteLine("Warning! The timer already exists.");
-                //  MessageBox.Show("Warning! The timer already exists.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
-                this.timer.reset();
+                Console.WriteLine("The timer already exists.\n Now we are restarting it.");
+                if(this.old == true)    //  If it's a new timer, it's not running yet.
+                                        //  In this case, we should reset and restart.
+                {
+                    this.old = false;
+                    this.timer.reset();
+                    Thread t1 = new Thread(new ThreadStart(timer.onStart));
+                    t1.Start();
+                }
+                else    //  Otherwise, we shall just reset it.
+                {
+                    this.timer.reset();
+                }
+                this.button2.Text = "Pause";    //  Once it's reset, the resume/pause button should also be reset.
             }
-            else    // Create a timer and start running it.
-            {
+            else    //  The "Start" button is pressed
+            {       //  Create a timer and start running it.
+                Console.WriteLine("Now we are starting a new timer.");
                 this.button1.Text = "Reset";
+                this.button2.Text = "Pause";
                 if (this.ChooseStyle == ChooseStyle.TimeSpan)
                 {
                     this.timer = TimerBuildSwitcher(this.duration, this.option,this.count_limit);
                 }
-                //  初始化和开始没有分离，导致加载时可能无法显示界面
+                //  初始化和开始没有分离，导致加载时可能无法显示界面(Fixed)
 
-                //  Origin test code: 
-                //System.TimeSpan span = new TimeSpan(0, 0, 10);
-                //this.timer = new CycleCountTimer(span, CycleCount, 5);
-                //this.timer = new CycleTimer(span, Cycle);
-                //this.timer = new TimingTimer(span, Timing);
-                //this.timer = new Timer(span, Normal);
-                //Timer timer = new Timer("./TimerConfig.json");
+                /// <summary>   The origin test code
+                /// System.TimeSpan span = new TimeSpan(0, 0, 10);
+                /// this.timer = new CycleCountTimer(span, CycleCount, 5);
+                /// this.timer = new CycleTimer(span, Cycle);
+                /// this.timer = new TimingTimer(span, Timing);
+                /// this.timer = new Timer(span, Normal);
+                /// Timer timer = new Timer("./TimerConfig.json");
+                /// </summary>
+
                 this.register_receivers();
-                this.direction = TimerDirection.Right;                
+                this.direction = TimerDirection.Right;               
                 Thread t1 = new Thread(new ThreadStart(timer.onStart));
                 t1.Start();
             }
         }
 
-        //  Pause/Continue,check whether the timer is loaded first. 
+        //  Pause/Resume
         private void button2_Click(object sender, EventArgs e)
         {
             if(button2.Text == "Pause")
@@ -290,6 +306,10 @@ namespace MultiTimer
             }
         }
 
+        /// <summary>
+        /// Show the percentage of the time gone.
+        /// </summary>
+        /// <param name="per"></param>
         public void refreshProgressBar(double per)
         {
             per = per < 0 ? 0 : per;
@@ -328,8 +348,8 @@ namespace MultiTimer
         //  A packed function to call before a timer is built.
         private static Timer TimerBuildSwitcher(string path)
         {
-            TimerConfigure tc = new TimerConfigure(path);
-            Timer T = null;
+            TimerConfigure tc = new TimerConfigure(path);   //  The timer configure to build from
+            Timer T = null; //  The timer to build
             switch (tc.timerOption)
             {
                 case TimerOption.Normal:
@@ -345,12 +365,11 @@ namespace MultiTimer
                     T = new CycleCountTimer(path);
                     break;
                 default:
-                    Console.WriteLine("Something wrong.");
-                    //  MessageBox.Show("未选择计时器种类，使用默认计时器", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Console.WriteLine("Timer type not chosen, it's set to default now.");
                     T = new Timer(path); //  Build a default timer.
                     break;
             }
-            return T;
+            return T;  
         }
 
         //  Overload
@@ -371,17 +390,24 @@ namespace MultiTimer
                     break;
                 case TimerOption.CycleCount:
                     //  Here need to be modified, the limit should be sent from UI.
+                    //  Fixed
                     T = new CycleCountTimer(OriginTimeSpan, timeroption, cycle_limit);
                     break;
                 default:
-                    Console.WriteLine("Something wrong.");
-                    //  MessageBox.Show("未选择计时器种类，使用默认计时器", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Console.WriteLine("Timer type not chosen, it's set to default now.");
                     T = new Timer(OriginTimeSpan, TimerOption.Normal); //  Build a default timer.
                     break;
             }
             return T;
         }
 
+        /// <summary>
+        ///     Refresh the theme, which is set in UI when left-clicked.
+        ///     This method should be called before refresh progress bar.
+        ///     This takes the percentage the time gone since some of the theme color 
+        ///     might be decided by the percentage.(Like Gay theme)
+        /// </summary>
+        /// <param name="per"></param>
         public void refreshTheme(double per)
         {
             switch (this.theme)
