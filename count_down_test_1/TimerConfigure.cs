@@ -128,4 +128,47 @@ namespace MultiTimer
         }
     }
 
+    class IntervalCycle_TimerConfigure : TimerConfigure
+    {
+        public int interval { get; set; }
+        public int count { get; set; }
+
+        public IntervalCycle_TimerConfigure() : base() {; }
+
+        public IntervalCycle_TimerConfigure(string path) : base(path) {; }
+
+        public IntervalCycle_TimerConfigure(System.DateTime StartTime, System.DateTime EndTime, System.DateTime CurrentTime, System.DateTime PauseTime,
+                    System.TimeSpan DiffTimeSpan, System.TimeSpan OriginTimeSpan,
+                    bool Expire, bool Alarm, bool EndSig, bool Pause, TimerOption TO, int Interval, int Count) :
+            base(StartTime, EndTime, CurrentTime, PauseTime, DiffTimeSpan, OriginTimeSpan, Expire, Alarm, EndSig, Pause, TO)
+        {
+            interval = Interval;
+            count = Count;
+        }
+
+        public override void load(string path)
+        {
+            IntervalCycle_TimerConfigure ictc = new IntervalCycle_TimerConfigure();
+            string json;
+            using (StreamReader sr = new StreamReader(path))
+            {
+                json = sr.ReadToEnd();
+                Console.WriteLine("Read configure done.");
+                ictc = JsonConvert.DeserializeObject<IntervalCycle_TimerConfigure>(json);
+                this.startTime = ictc.startTime;
+                this.endTime = ictc.endTime;
+                this.originTimeSpan = ictc.originTimeSpan;
+                this.expire = ictc.expire;
+                this.endSig = false;
+                this.alarm = ictc.alarm;
+                this.pause = true;
+                this.timerOption = ictc.timerOption;
+                this.diffTimeSpan = ictc.diffTimeSpan;
+                this.pauseTime = ictc.pauseTime;
+                this.interval = ictc.interval;
+                this.count = ictc.count;
+            }
+        }
+    }
+
 }

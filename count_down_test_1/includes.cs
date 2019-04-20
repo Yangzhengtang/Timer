@@ -12,7 +12,8 @@ namespace MultiTimer
         Normal = 1, //  Default countdown timer.
         Cycle  = 2, //  Cycle countdown timer.
         Timing = 3, //  Timing timer.
-        CycleCount = 4  //  Cycle countdown timer, also record the times.
+        CycleCount = 4,  //  Cycle countdown timer, also record the times.
+        Interval = 5
     }
 
     public enum TimerDirection

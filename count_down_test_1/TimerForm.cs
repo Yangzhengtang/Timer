@@ -346,6 +346,7 @@ namespace MultiTimer
         }
 
         //  A packed function to call before a timer is built.
+        //  这里的switchbuilder有很大的问题，类的特性表现的比较差。应该改为Timer中统一的接口来处理。
         private static Timer TimerBuildSwitcher(string path)
         {
             TimerConfigure tc = new TimerConfigure(path);   //  The timer configure to build from
@@ -363,6 +364,9 @@ namespace MultiTimer
                     break;
                 case TimerOption.CycleCount:
                     T = new CycleCountTimer(path);
+                    break;
+                case TimerOption.Interval:
+                    T = new IntervalCycleTimer(path);
                     break;
                 default:
                     Console.WriteLine("Timer type not chosen, it's set to default now.");
