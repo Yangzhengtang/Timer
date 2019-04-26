@@ -45,7 +45,8 @@ namespace MultiTimer
         {
             TopMost = true;
             Application.DoEvents(); //to avoid block the main thread
-            this.sound.ChangePath(soundconfigure.SoundPathList[soundconfigure.DefaultSoundPointer]); //set path of sound
+            this.sound.ChangePath(System.Environment.CurrentDirectory + "\\" +
+                   soundconfigure.SoundPathList[soundconfigure.DefaultSoundPointer]); //set path of sound
             Console.WriteLine(soundconfigure.SoundPathList[soundconfigure.DefaultSoundPointer]);
             this.sound.mciPlay();//play music
             //System.Threading.Thread.Sleep(1000);

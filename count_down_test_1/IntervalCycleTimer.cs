@@ -103,7 +103,7 @@ namespace MultiTimer
                 }
                 else if (diffTimeSpan.TotalMilliseconds > 3000)    // Expired but not turn over, the time span over 3 secs, stop alarming
                 {
-                    expire = false;
+                    expire = true;
                     this.alarm = false;
                     onAfterAlarm();
                 }

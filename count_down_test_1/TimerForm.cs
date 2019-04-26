@@ -397,6 +397,9 @@ namespace MultiTimer
                     //  Fixed
                     T = new CycleCountTimer(OriginTimeSpan, timeroption, cycle_limit);
                     break;
+                case TimerOption.Interval:
+                    T = new IntervalCycleTimer(OriginTimeSpan, timeroption, cycle_limit);
+                    break;
                 default:
                     Console.WriteLine("Timer type not chosen, it's set to default now.");
                     T = new Timer(OriginTimeSpan, TimerOption.Normal); //  Build a default timer.

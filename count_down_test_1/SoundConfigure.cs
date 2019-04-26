@@ -35,12 +35,12 @@ namespace MultiTimer
                 Console.WriteLine("Read configure done.");
                 tc = JsonConvert.DeserializeObject<SoundConfigure>(json);
                 Console.WriteLine("Copying....");
-                this.ConfigurePath = tc.ConfigurePath;
+               // this.ConfigurePath = tc.ConfigurePath;
                 this.DefaultSoundPath = tc.DefaultSoundPath;
                 this.DefaultSoundPointer = tc.DefaultSoundPointer;
                 this.SoundPathList = tc.SoundPathList;
                // this.DefaultSoundPointer = 0; for test
-                this.DefaultSoundPath = SoundPathList[this.DefaultSoundPointer];
+                this.DefaultSoundPath = System.Environment.CurrentDirectory + "\\" + SoundPathList[this.DefaultSoundPointer];
                 Console.WriteLine("Copy done");
                 Console.WriteLine(json);
                 //sr.Close();
@@ -77,7 +77,7 @@ namespace MultiTimer
         public void ChangePointer(int NewPointer)
         {
             this.DefaultSoundPointer = NewPointer;
-            this.DefaultSoundPath = this.SoundPathList[NewPointer];
+            this.DefaultSoundPath = System.Environment.CurrentDirectory + "\\" + this.SoundPathList[NewPointer];
             this.dump();
         }
 

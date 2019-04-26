@@ -60,7 +60,8 @@ namespace MultiTimer
                 this.tempDateTime_1 = this.tempDateTime_1.AddHours(Convert.ToDouble(HourBox.Text));
                 this.tempDateTime_1 = this.tempDateTime_1.AddMinutes(Convert.ToDouble(MinBox.Text));
                 this.tempDateTime_1 = this.tempDateTime_1.AddSeconds(Convert.ToDouble(SecBox.Text));
-                if(this.option == TimerOption.CycleCount) {this.Cycle_limit = Convert.ToInt32(CountBox.Text);}
+                if(this.option == TimerOption.CycleCount || this.option == TimerOption.Interval)
+                { this.Cycle_limit = Convert.ToInt32(CountBox.Text);}
                 else { this.Cycle_limit = 0; }
             }
             catch (System.FormatException)
@@ -72,7 +73,7 @@ namespace MultiTimer
             this.duration = this.tempDateTime_1.Subtract(this.tempDateTime_0);
             if (this.option == TimerOption.Timing)
             {
-                this.duration = new System.TimeSpan(0);
+                this.duration = new System.TimeSpan(0); //  If it is a timing timer, the duration should be cleared.
             }
             this.OnChosen();
         }
