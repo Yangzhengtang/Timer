@@ -103,11 +103,8 @@ namespace MultiTimer
                 textBox1.AppendText("Alarming!");
                 this.TopMost = true;  //Window jump to the top when alarming.
                 this.Show();
-                //this.alarmRise = new AlarmRiseForm(this.alarmWords);
                 this.alarmRise = new AlarmRiseForm(this.SoundPointer);//hope to save the SoundPointer in .json when chosen in the ContextMenuStrip1 in the future
                 this.alarmRise.Show();
-                //System.Threading.Thread.Sleep(10);
-                //textBox1.Clear();
             };
             if (this.InvokeRequired)
             {
@@ -296,8 +293,8 @@ namespace MultiTimer
             {
                 if (this.timer == null)
                 {
-                    Console.WriteLine("Warning! The timer is no runing.");
-                    MessageBox.Show("Warning! The timer is no runing.", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                    Console.WriteLine("Warning! The timer is not runing.");
+                    MessageBox.Show("Warning! The timer is not runing.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
                 else
                 {

@@ -18,7 +18,7 @@ namespace MultiTimer
             InitializeComponent();
         }
 
-        private TimerChooseForm TCU;
+        private TimerChooseForm TCF;
         private List<Timer> TimerList;
         private List<string> ConfigurePathList;
         private int index;
@@ -39,29 +39,29 @@ namespace MultiTimer
                     this.index += 1;
                 }
             }
-            this.TCU = null;
+            this.TCF = null;
                 
         }
 
         //  Construct a new ChooseUnit.
-        private void button2_Click(object sender, EventArgs e)
+        private void createButton_Click(object sender, EventArgs e)
         {
-            if(this.TCU != null)    //  There's already a choose unit open from this manager. Stop it.
+            if(this.TCF != null)    //  There's already a choose unit open from this manager. Stop it.
             {
                 Console.WriteLine("Warning! Already started a choose unit.");
-                MessageBox.Show("请通过选项界面输入", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("请通过选项界面输入", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
             else    //  Otherwise, start a new choose unit.
             {
-                this.TCU = new TimerChooseForm();
-                this.TCU.Show();
-                this.TCU.Chosen += new TimerChooseForm.ChosenEventHandler(ChosenReceiver);
-                this.TCU.FormClosed += new FormClosedEventHandler(ClosedEventReceiver);
+                this.TCF = new TimerChooseForm();
+                this.TCF.Show();
+                this.TCF.Chosen += new TimerChooseForm.ChosenEventHandler(ChosenReceiver);
+                this.TCF.FormClosed += new FormClosedEventHandler(ClosedEventReceiver);
             }
         }
         
         //  Load and Construct
-        private void button1_Click(object sender, EventArgs e)
+        private void loadButton_Click(object sender, EventArgs e)
         {
             foreach(string configpath in ConfigurePathList)
             {
@@ -75,9 +75,9 @@ namespace MultiTimer
         {
             Action DoAction = delegate ()
             {
-                if (this.TCU != null)
+                if (this.TCF != null)
                 {
-                    this.TCU = null;                  
+                    this.TCF = null;                  
                 }
             };
             if (this.InvokeRequired)
@@ -101,7 +101,7 @@ namespace MultiTimer
             {
                 TimerForm f = new TimerForm(e.duration, e.option, e.cycle_limit);
                 f.Show();
-                this.TCU.Close();
+                this.TCF.Close();
             };
             if (this.InvokeRequired)
             {

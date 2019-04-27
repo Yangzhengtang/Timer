@@ -13,10 +13,10 @@ namespace MultiTimer
     {
         public string ConfigurePath { get; set; } 
         public string DefaultSoundPath { get; set; }
-        // public List<string> SoundPathList { get; set; }
          public List<string> SoundPathList = new List<string>();
         public int DefaultSoundPointer { get; set; }
 
+        // public List<string> SoundPathList { get; set; }
         public SoundConfigure()
         {
             this.ConfigurePath = System.Environment.CurrentDirectory + "\\SoundConfigure.json";

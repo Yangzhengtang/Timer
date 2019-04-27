@@ -56,7 +56,7 @@ namespace MultiTimer
             this.chooseStyle = ChooseStyle.TimeSpan;   
             try
             {
-                this.tempDateTime_1 = this.tempDateTime_0;
+                this.tempDateTime_1 = this.tempDateTime_0;  //  Initialize the temp datetime.
                 this.tempDateTime_1 = this.tempDateTime_1.AddHours(Convert.ToDouble(HourBox.Text));
                 this.tempDateTime_1 = this.tempDateTime_1.AddMinutes(Convert.ToDouble(MinBox.Text));
                 this.tempDateTime_1 = this.tempDateTime_1.AddSeconds(Convert.ToDouble(SecBox.Text));
@@ -64,10 +64,10 @@ namespace MultiTimer
                 { this.Cycle_limit = Convert.ToInt32(CountBox.Text);}
                 else { this.Cycle_limit = 0; }
             }
-            catch (System.FormatException)
+            catch (System.FormatException)  //  Got the wrong input.
             {
                 Console.WriteLine("Warning! Haven't input the duration yet.");
-                MessageBox.Show("请输入正确格式", "FBI WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
+                MessageBox.Show("请输入正确格式", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
             this.duration = this.tempDateTime_1.Subtract(this.tempDateTime_0);
