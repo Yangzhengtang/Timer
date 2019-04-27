@@ -25,7 +25,7 @@ namespace MultiTimer
         {
             if (timerOption != TimerOption.Timing)
             {
-                Console.WriteLine("What the fuck?");
+                Console.WriteLine("Something wrong?");
                 this.onEnd();
                 return;
             }

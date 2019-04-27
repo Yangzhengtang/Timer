@@ -17,17 +17,9 @@ namespace MultiTimer
             OriginTimeSpan, timeroption)
         {; }
 
-        //  The overridden method.
+        //  The overridden method of cycle timer.
         protected override void update()
         {
-            /*
-            if(timerOption != TimerOption.Cycle)
-            {
-                Console.WriteLine("What the fuck?");
-                this.onEnd();
-                return;
-            }   */
-
             System.Threading.Thread.Sleep(20);
             currentTime = System.DateTime.Now;
 
