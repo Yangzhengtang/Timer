@@ -16,6 +16,16 @@ MultiTimer（多功能计时器）。
 - 编译方式：点击MultiTimer.sln打开VS2017项目，在VS2017中可生成debug或release版本
 - 目标平台：为装有.NET framework 4.6.1的Windows系统计算机
 
+#### 使用方式：
+
+1. 首先点击/count_down_test/bin/Debug下可执行文件打开软件
+
+2. 在主界面点击Create或Load启动计时器生成界面(首次使用请点击Create)
+
+3. 进入生成界面后按需设置计时器种类、时长，点击start按钮即可启动计时器
+
+   注：由于软件运行必须使用音频文件及配置文件，若软件运行目录改动导致无法运行，需将Properties目录下以下文件：beep.mp3, didi.mp3, joy.mp3, SoundConfigure.json拷贝至运行目录下
+
 #### 作者：
 
 江智昊、杨正瑭
