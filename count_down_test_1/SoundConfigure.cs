@@ -11,19 +11,19 @@ namespace MultiTimer
 {
     class SoundConfigure
     {
-        public string ConfigurePath { get; set; } 
-        public string DefaultSoundPath { get; set; }
-         public List<string> SoundPathList = new List<string>();
-        public int DefaultSoundPointer { get; set; }
+        public string ConfigurePath { get; set; } // the path of SoundConfigure.json
+        public string DefaultSoundPath { get; set; }// the sound path to be played
+         public List<string> SoundPathList = new List<string>();//all registered path of sounds
+        public int DefaultSoundPointer { get; set; }// a num point to the DefaultSoundPath in the SoundPathList
 
         // public List<string> SoundPathList { get; set; }
-        public SoundConfigure()
+        public SoundConfigure()//instance a SoundConfigure object with the ConfigurePath
         {
             this.ConfigurePath = System.Environment.CurrentDirectory + "\\SoundConfigure.json";
             // this.SoundPathList = new List<string>();
         }
 
-        public void load()
+        public void load()// load configure from SoundConfigure.json
         {
            this. ConfigurePath = System.Environment.CurrentDirectory + "\\SoundConfigure.json";
             string json;
@@ -46,22 +46,8 @@ namespace MultiTimer
                 //sr.Close();
             }
         }
-        public void ChooseSound()
-        {
-           
-        }
-
-        public void AddSound()
-        {
-
-        }
-
-        //public void init()
-        //{
-        //    this.SoundPathList.Add("C:\\Users\\lenovo\\Desktop\\count_down_test_1\\count_down_test_1\\bin\\Release\\joy.mp3");
-            
-        //}
-        public void dump()
+ 
+        public void dump()// save current configure to SoundConfigure.json
         {
             string json = JsonConvert.SerializeObject(this);
             //Console.WriteLine("Adding sound...");
@@ -74,7 +60,7 @@ namespace MultiTimer
             }
         }
 
-        public void ChangePointer(int NewPointer)
+        public void ChangePointer(int NewPointer) //chang the DefaultSoundPointer according to the user input
         {
             this.DefaultSoundPointer = NewPointer;
             this.DefaultSoundPath = System.Environment.CurrentDirectory + "\\" + this.SoundPathList[NewPointer];

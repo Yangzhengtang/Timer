@@ -94,15 +94,14 @@ namespace MultiTimer
             timer.Update += new Timer.UpdateHandler(UpdateReceiver);
         }
 
-        //  Run when got the alarm event.
-        private void AlarmReceiver(object sender, EventArgs e)
+        private void AlarmReceiver(object sender, EventArgs e)//When time is up, create an alarm window
         {
             Console.WriteLine("Just on alarm.");
             Action DoAction = delegate ()
             {
                 textBox1.Clear();
                 textBox1.AppendText("Alarming!");
-                this.TopMost = true;                                  //Window jump to the top when alarming.
+                this.TopMost = true;  //Window jump to the top when alarming.
                 this.Show();
                 this.alarmRise = new AlarmRiseForm(this.SoundPointer);//hope to save the SoundPointer in .json when chosen in the ContextMenuStrip1 in the future
                 this.alarmRise.Show();
@@ -177,7 +176,6 @@ namespace MultiTimer
             }
         }
 
-        //  
         private void UpdateReceiver(object sender, Timer.UpdateEventArgs e)
         {
             Console.WriteLine("Just Update the timer.");

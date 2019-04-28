@@ -9,7 +9,7 @@ namespace MultiTimer
 {
     public class Sound
     {
-        [DllImport("winmm.dll", SetLastError = true)]
+        [DllImport("winmm.dll", SetLastError = true)]//import winmm.dll to play music using Windows APIs
         public static extern bool PlaySound(string pszSound, UIntPtr hmod, uint fdwSound);
         [DllImport("winmm.dll", SetLastError = true)]
         public static extern long mciSendString(string strCommand,
@@ -18,7 +18,7 @@ namespace MultiTimer
         public static extern long sndPlaySound(string lpszSoundName, long uFlags);
 
         [Flags]
-        public enum SoundFlags
+        public enum SoundFlags//list all supported formats of sound source files
         {
             /// <summary>play synchronously (default)</summary>
             SND_SYNC = 0x0000,
@@ -46,32 +46,32 @@ namespace MultiTimer
             SND_RESOURCE = 0x00040004
         }
 
-        public string SoundPath;
-        public Sound(string path)
+        public string SoundPath;//the path of sound file to be played
+        public Sound(string path)//instance a Sound object with a user input sound path
         {
             SoundPath = path;
         }
 
 
-        public void ChangePath(string NewPath)
+        public void ChangePath(string NewPath)// change the SoundPath based on user input
         {
             SoundPath = NewPath;
         }
 
-        public Sound()
+        public Sound()// instance a Sound object with the defalut sound path
         {
             SoundPath = System.Environment.CurrentDirectory + "\\beep.mp3";
         }
 
-        public static bool Play(string strFileName)
+        public static bool Play(string strFileName)//play the sound of the giving sound path
         {
             return PlaySound(strFileName, UIntPtr.Zero,
                     (uint)(SoundFlags.SND_FILENAME | SoundFlags.SND_SYNC | SoundFlags.SND_NOSTOP));
         }
 
-        public void mciPlay()
+        public void mciPlay()//play the sound according to the SoundPath, which is the most stable function
         {
-            string playCommand = "open " + this.SoundPath + " alias MyWav"; //all types can be played
+            string playCommand = "open " + this.SoundPath + " alias MyWav"; //change the name of sound, all types can be played
             mciSendString(playCommand, null, 0, IntPtr.Zero);
             mciSendString("set MyWav time format ms", null, 0, IntPtr.Zero);
             mciSendString("seek MyWav to 0", null, 0, IntPtr.Zero);
@@ -79,7 +79,7 @@ namespace MultiTimer
 
         }
 
-        public void mciPlay(string strFileName)
+        public void mciPlay(string strFileName)//play the sound according to the given sound path, which is the most stable function
         {
             this.SoundPath = strFileName;
             string playCommand = "open " + strFileName + " alias MyWav"; //all types can be played
@@ -89,39 +89,21 @@ namespace MultiTimer
             mciSendString("play MyWav", null, 0, IntPtr.Zero);
 
         }
-        public void mciStop()
+        public void mciStop()// pause the current sound
         {
             mciSendString("stop MyWav", null, 0, new IntPtr(0));
         }
-        public static void sndPlay(string strFileName)
+        public static void sndPlay(string strFileName)//play the sound of the giving sound path
         {
             sndPlaySound(strFileName, (long)SoundFlags.SND_SYNC);
         }
-        public void mciClose()
+        public void mciClose() //close the current sound
         {
             mciSendString("close MyWav", null, 0, new IntPtr(0));
         }
     }
 
 
-    /* example of change bgm
-
-          this.sound.mciPlay();
-          System.Threading.Thread.Sleep(1000);
-          this.sound.mciStop();
-          this.sound.mciClose();
-          System.Threading.Thread.Sleep(1000);
-          Application.DoEvents(); //thread窗口无法显示
-          SoundConfigure soundConfigure = new SoundConfigure();
-          soundConfigure.load();
-          //this.label1.Text = showWords;
-          //string PathOfSound;
-          //soundConfigure.init();
-          soundConfigure.dump();
-          sound.ChangePath(soundConfigure.DefaultSoundPath);
-          Console.WriteLine(soundConfigure.DefaultSoundPath);
-          Console.WriteLine(sound.SoundPath);
-          sound.mciPlay(sound.SoundPath);
-     */
+    
 }
 
