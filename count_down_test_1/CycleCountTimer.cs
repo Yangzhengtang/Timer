@@ -12,6 +12,7 @@ namespace MultiTimer
         private int limit;  //  The timer will end when the count reaches the limit.
         private int count;  //  Each overturn will add to the count.
 
+        //  Build from json.
         public CycleCountTimer(string path = "./TimerConfig.json")
         {
             string json;
@@ -58,12 +59,15 @@ namespace MultiTimer
             this.onUpdated();
         }
 
+        //  Overriden methode, run when the timer come to the end of a duration.
         protected override void onCycleTurnOver()
         {
-            base.onCycleTurnOver();
+            base.onCycleTurnOver(); //  Run the base turnover method
+
             this.count += 1;
             Console.WriteLine("Now the count is {0}", this.count);
-            if(this.count == this.limit)
+
+            if(this.count == this.limit)    // The count reach the limit, the timer should be stopped.
             {
                 this.endSig = true;
             }

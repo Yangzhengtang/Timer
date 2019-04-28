@@ -8,6 +8,10 @@ using System.IO;
 
 namespace MultiTimer
 {
+    /// <summary>
+    /// This class stores the configure of a timer, 
+    /// it's used for building and saving timers.
+    /// </summary>
     class TimerConfigure
     {
         public System.DateTime startTime { get; set; }
@@ -50,6 +54,7 @@ namespace MultiTimer
             timerOption = TO;
         }
 
+        //  Dump this configure to the json file.
         public virtual void dump(string path)
         {
             Console.WriteLine("Now dumping the configure to {0}",path);
@@ -85,6 +90,7 @@ namespace MultiTimer
         }
     }
 
+    //  The configuration of CycleCountTimer
     class CycleCount_TimerConfigure: TimerConfigure
     {
         public int limit { get; set; }
@@ -127,7 +133,8 @@ namespace MultiTimer
             }
         }
     }
-
+   
+    //  The configuration of IntervalCylceTimer
     class IntervalCycle_TimerConfigure : TimerConfigure
     {
         public int interval { get; set; }

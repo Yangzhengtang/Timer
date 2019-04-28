@@ -26,7 +26,7 @@ namespace MultiTimer
         {
             InitializeComponent();
             this.duration = DateTime.Now.Subtract(DateTime.Now);    //  Clear the duration
-            this.tempDateTime_0 = DateTime.Now;   //  Give an initial temp time.
+            this.tempDateTime_0 = DateTime.Now;                     //  Give an initial temp time.
         }
 
         /// <summary>
@@ -43,7 +43,7 @@ namespace MultiTimer
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            this.option = (TimerOption)(comboBox1.SelectedIndex + 1);
+            this.option = (TimerOption)(comboBox1.SelectedIndex + 1);   //  When selected the option, it will be set.
         }
 
         /// <summary>
@@ -59,10 +59,10 @@ namespace MultiTimer
                 this.tempDateTime_1 = this.tempDateTime_0;  //  Initialize the temp datetime.
                 this.tempDateTime_1 = this.tempDateTime_1.AddHours(Convert.ToDouble(HourBox.Text));
                 this.tempDateTime_1 = this.tempDateTime_1.AddMinutes(Convert.ToDouble(MinBox.Text));
-                this.tempDateTime_1 = this.tempDateTime_1.AddSeconds(Convert.ToDouble(SecBox.Text));
+                this.tempDateTime_1 = this.tempDateTime_1.AddSeconds(Convert.ToDouble(SecBox.Text));    //  Add time duration to the time.
                 if(this.option == TimerOption.CycleCount || this.option == TimerOption.Interval)
                 { this.Cycle_limit = Convert.ToInt32(CountBox.Text);}
-                else { this.Cycle_limit = 0; }
+                else { this.Cycle_limit = 0; }      //  Try to get the inputs if they're valid.
             }
             catch (System.FormatException)  //  Got the wrong input.
             {
@@ -70,7 +70,9 @@ namespace MultiTimer
                 MessageBox.Show("请输入正确格式", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 return;
             }
-            this.duration = this.tempDateTime_1.Subtract(this.tempDateTime_0);
+
+            this.duration = this.tempDateTime_1.Subtract(this.tempDateTime_0);      //  Got the input time duration.
+
             if (this.option == TimerOption.Timing)
             {
                 this.duration = new System.TimeSpan(0); //  If it is a timing timer, the duration should be cleared.
@@ -79,7 +81,7 @@ namespace MultiTimer
         }
 
         public void OnChosen()
-        {
+        {   //  When start a new timer, these properties should be passed to TimerForm from UI.
             ChosenEventArgs args = new ChosenEventArgs();
             args.chooseStyle = this.chooseStyle;
             args.option = this.option;

@@ -31,13 +31,13 @@ namespace MultiTimer
         protected System.DateTime currentTime;
         protected System.DateTime pauseTime;
 
-        protected System.TimeSpan diffTimeSpan;
-        protected System.TimeSpan originTimeSpan;
+        protected System.TimeSpan diffTimeSpan;     //  (currenttime - starttime)
+        protected System.TimeSpan originTimeSpan;   //  The origin duration
 
-        protected bool expire;
-        protected bool alarm;
-        protected bool pause;
-        protected bool endSig;    //  Sigal sent from UI
+        protected bool expire;      //  Whether the timer is expired
+        protected bool alarm;       //  Whether the timer is alarming
+        protected bool pause;       //  Whether the timer is pausd
+        protected bool endSig;      //  End sigal sent from UI
         public TimerOption timerOption;
         protected TimerConfigure timerConfigure;
         
@@ -234,21 +234,24 @@ namespace MultiTimer
             this.Alarm(this, new EventArgs());   //send Alarming event
         }
 
+        //  After the alarm is expired.
         public void onAfterAlarm()
         {
             Console.WriteLine("after alarming");
             this.AfterAlarm(this, new EventArgs());
         }
 
+        //  When a timer is ended.
         public void onEnd()
         {
             Console.WriteLine("Now ending");
             this.endSig = true;
             this.pause = true;
-            this.dumpConfig();  //  TODO: add a windows, let the user choose whether to save the timer.
+            this.dumpConfig();  //  When closing a timer, dump the configure file.
             this.End(this, new EventArgs());
         }
 
+        //  Pause or resume
         public virtual void onPauseResume() 
         {
             if (pause == false)

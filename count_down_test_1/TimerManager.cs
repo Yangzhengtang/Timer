@@ -127,6 +127,7 @@ namespace MultiTimer
             }
         }
 
+        //  Show the windows from the system tray.
         private void toolStripMenuItem1_Click(object sender, EventArgs e)
         {
             this.Show();
@@ -134,11 +135,13 @@ namespace MultiTimer
             this.Activate();
         }
 
+        //  Hide the windows from the system tray.
         private void toolStripMenuItem2_Click(object sender, EventArgs e)
         {
             this.Hide();
         }
 
+        //  Exit the program from the system tray.
         private void toolStripMenuItem3_Click(object sender, EventArgs e)
         {
             if (MessageBox.Show("确定要退出程序?", "安全提示",

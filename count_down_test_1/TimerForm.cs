@@ -94,6 +94,7 @@ namespace MultiTimer
             timer.Update += new Timer.UpdateHandler(UpdateReceiver);
         }
 
+        //  Run when got the alarm event.
         private void AlarmReceiver(object sender, EventArgs e)
         {
             Console.WriteLine("Just on alarm.");
@@ -101,12 +102,12 @@ namespace MultiTimer
             {
                 textBox1.Clear();
                 textBox1.AppendText("Alarming!");
-                this.TopMost = true;  //Window jump to the top when alarming.
+                this.TopMost = true;                                  //Window jump to the top when alarming.
                 this.Show();
                 this.alarmRise = new AlarmRiseForm(this.SoundPointer);//hope to save the SoundPointer in .json when chosen in the ContextMenuStrip1 in the future
                 this.alarmRise.Show();
             };
-            if (this.InvokeRequired)
+            if (this.InvokeRequired)    //  Cross-thread operation
             {
                 ControlExtensions.UIThreadInvoke(this, delegate
                 {
@@ -119,12 +120,13 @@ namespace MultiTimer
             }
         }
 
+        //  Run when got the after alarm event.
         private void AfterAlarmReceiver(object sender, EventArgs e)
         {
             Console.WriteLine("Just after alarm.");
             Action DoAction = delegate ()
             {
-                if(this.alarmOffStyle == AlarmOffStyle.Auto)
+                if(this.alarmOffStyle == AlarmOffStyle.Auto)    //  If the alarm form is set to be close automatically.
                 {
                     if (this.alarmRise != null)
                     {
@@ -132,13 +134,13 @@ namespace MultiTimer
                     }
                     else
                     {
-                        Console.WriteLine("WTF!");
+                        Console.WriteLine("?");
                     }
                 }
                 textBox1.Clear();
             };
 
-            if (this.InvokeRequired)
+            if (this.InvokeRequired)//  Cross-thread operation
             {
                 ControlExtensions.UIThreadInvoke(this, delegate
                 {
@@ -151,6 +153,7 @@ namespace MultiTimer
             }
         }
 
+        //  Run when got the end event.
         private void EndReceiver(object sender, EventArgs e)
         {
             Console.WriteLine("Just end the timer.");
@@ -161,7 +164,7 @@ namespace MultiTimer
             };
 
 
-            if (this.InvokeRequired)
+            if (this.InvokeRequired)//  Cross-thread operation
             {
                 ControlExtensions.UIThreadInvoke(this, delegate
                 {
@@ -174,6 +177,7 @@ namespace MultiTimer
             }
         }
 
+        //  
         private void UpdateReceiver(object sender, Timer.UpdateEventArgs e)
         {
             Console.WriteLine("Just Update the timer.");
@@ -183,25 +187,24 @@ namespace MultiTimer
 
                 switch (this.timer.timerOption)
                 {
-                    case TimerOption.Timing:
+                    case TimerOption.Timing:    //  If it's a timing timer, just show the time.
                         this.displayer.AppendText(e.Diff.ToString("hh':'mm':'ss'.'fff"));
                         break;
-                    default:
+                    default:    //  Else, show the time left and the progress.
                         if (e.Expire)
                         {
-                            this.refreshProgressBar(0);
+                            this.refreshProgressBar(0);    //   When it's expired, the progress bar should be run to the end.
                         }
                         else
                         {
                             double percent = (e.Diff.TotalMilliseconds / e.Orig.TotalMilliseconds);
-                            this.refreshProgressBar(percent);
+                            this.refreshProgressBar(percent);   //  Show progress bar according to the percentage.
                         }
-                        //  this.displayer.AppendText(e.Expire ? "Expired: " : "Left: ");
                         this.displayer.AppendText(e.Diff.ToString("hh':'mm':'ss'.'fff"));
                         break;
                 }
             };
-            if (this.InvokeRequired)
+            if (this.InvokeRequired)//  Cross-thread operation
             {
                 ControlExtensions.UIThreadInvoke(this, delegate
                 {
@@ -252,18 +255,8 @@ namespace MultiTimer
                 {
                     this.timer = TimerBuildSwitcher(this.duration, this.option,this.count_limit);
                 }
-                //  初始化和开始没有分离，导致加载时可能无法显示界面(Fixed)
 
-                /// <summary>   The origin test code
-                /// System.TimeSpan span = new TimeSpan(0, 0, 10);
-                /// this.timer = new CycleCountTimer(span, CycleCount, 5);
-                /// this.timer = new CycleTimer(span, Cycle);
-                /// this.timer = new TimingTimer(span, Timing);
-                /// this.timer = new Timer(span, Normal);
-                /// Timer timer = new Timer("./TimerConfig.json");
-                /// </summary>
-
-                this.register_receivers();
+                this.register_receivers();      //  Register all the receiver functions.
                 this.direction = TimerDirection.Right;               
                 Thread t1 = new Thread(new ThreadStart(timer.onStart));
                 t1.Start();
@@ -273,6 +266,7 @@ namespace MultiTimer
         //  Pause/Resume
         private void button2_Click(object sender, EventArgs e)
         {
+            //  Switch the text on the button.
             if(button2.Text == "Pause")
             {
                 button2.Text = "Resume";
@@ -281,7 +275,7 @@ namespace MultiTimer
             {
                 button2.Text = "Pause";
             }
-            if (this.old == true)
+            if (this.old == true)   //  A loaded timer, not start yet, now start it.
             {
                 this.old = false;
                 this.direction = TimerDirection.Right;
@@ -296,7 +290,7 @@ namespace MultiTimer
                     Console.WriteLine("Warning! The timer is not runing.");
                     MessageBox.Show("Warning! The timer is not runing.", "WARNING", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 }
-                else
+                else    //  A running new timer.
                 {
                     this.timer.onPauseResume();
                 }
@@ -440,41 +434,49 @@ namespace MultiTimer
             }
         }
 
+        //  Change the text.
         private void textBox2_TextChanged(object sender, EventArgs e)
         {
             this.alarmWords = textBox2.Text;
         }
-
+        
+        //  When chosing the close style.
         private void autooffToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.alarmOffStyle = AlarmOffStyle.Auto;
         }
 
+        //  When chosing the close style.
         private void manualToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.alarmOffStyle = AlarmOffStyle.Manual;
         }
-
+        
+        //  When chosing the direction.
         private void leftToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.direction = TimerDirection.Left;
         }
-
+       
+        //  When chosing the direction.
         private void rightToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.direction = TimerDirection.Right;
         }
 
+        //  When chosing the theme.
         private void blackWhiteToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.theme = Theme.BlackAndWhile;
         }
 
+        //  When chosing the theme.
         private void defaultToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.theme = Theme.Default;
         }
 
+        //  When chosing the theme.
         private void gayToolStripMenuItem_Click(object sender, EventArgs e)
         {
             this.theme = Theme.Gay;
@@ -482,10 +484,6 @@ namespace MultiTimer
 
         private void beepToolStripMenuItem_Click(object sender, EventArgs e)
         {
-          //  this.soundconfigure.load();
-          //  this.soundconfigure.init();
-          //  this.soundconfigure.dump();
-          // this.soundconfigure.load();
             this.soundconfigure.ChangePointer(0);
             this.SoundPointer = 0;
             this.soundconfigure.dump();
