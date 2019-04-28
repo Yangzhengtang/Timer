@@ -94,7 +94,7 @@ namespace MultiTimer
             timer.Update += new Timer.UpdateHandler(UpdateReceiver);
         }
 
-        private void AlarmReceiver(object sender, EventArgs e)
+        private void AlarmReceiver(object sender, EventArgs e)//When time is up, create an alarm window
         {
             Console.WriteLine("Just on alarm.");
             Action DoAction = delegate ()
@@ -119,7 +119,7 @@ namespace MultiTimer
             }
         }
 
-        private void AfterAlarmReceiver(object sender, EventArgs e)
+        private void AfterAlarmReceiver(object sender, EventArgs e)//automatically close the alarm window
         {
             Console.WriteLine("Just after alarm.");
             Action DoAction = delegate ()

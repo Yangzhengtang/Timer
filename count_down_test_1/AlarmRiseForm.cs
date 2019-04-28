@@ -35,7 +35,7 @@ namespace MultiTimer
             Close();//close the form  
         }
 
-        private void AlarmRise_FormClosing(object sender, FormClosingEventArgs e)
+        private void AlarmRise_FormClosing(object sender, FormClosingEventArgs e)//close the current playing music when closing the window
         {
             this.sound.mciStop();
             this.sound.mciClose();
@@ -49,18 +49,6 @@ namespace MultiTimer
                    soundconfigure.SoundPathList[soundconfigure.DefaultSoundPointer]); //set path of sound
             Console.WriteLine(soundconfigure.SoundPathList[soundconfigure.DefaultSoundPointer]);
             this.sound.mciPlay();//play music
-            //System.Threading.Thread.Sleep(1000);
-            //this.sound.mciStop();
-            //this.sound.mciClose();
-            //System.Threading.Thread.Sleep(1000);
-            //Application.DoEvents(); //thread窗口无法显示
-            //SoundConfigure soundConfigure = new SoundConfigure();
-            //soundConfigure.load();
-            //soundConfigure.dump();
-            //sound.ChangePath(soundConfigure.DefaultSoundPath);
-            //Console.WriteLine(soundConfigure.DefaultSoundPath);
-            //Console.WriteLine(sound.SoundPath);
-            //sound.mciPlay(sound.SoundPath);
             for (; ; )   //shake the window
             {
                 int shake = 5;
